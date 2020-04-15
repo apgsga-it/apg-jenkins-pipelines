@@ -9,6 +9,6 @@ unclassified:
             scm:
               git:
                 userRemoteConfigs:
-                  - url: "https://github.com/chhex/jenkins-pipeline-testlib.git"
+                  - url: "https://github.com/apgsga-it/jenkins-pipeline-testlib.git"
                 branches:
                   - name: "master"
