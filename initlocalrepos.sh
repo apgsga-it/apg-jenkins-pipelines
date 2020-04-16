@@ -28,6 +28,22 @@ gradle
 
 EOF
 }
+
+coAndBuildTestModules() {
+  SAVEDWD=$(pwd)
+  if [ -d "$TEST_MODULES_REPO_DIR" ]; then
+    echo "Deleteing $TEST_MODULES_REPO_DIR recursively "
+    rm -Rf "$TEST_MODULES_REPO_DIR"
+  fi
+  git clone "$REPO_TESTMODULES" "$TEST_MODULES_REPO_DIR"
+  cd "$TEST_MODULES_ROOT_DIR/testapp-bom"
+  mvn install
+  cd "$TEST_MODULES_ROOT_DIR/testapp-parentpom"
+  mvn install
+  cd "$TEST_MODULES_ROOT_DIR/testapp-module"
+  mvn dependency:resolve dependency:resolve-plugins
+  cd "$SAVEDWD"
+}
 # Maven Setup
 initMaven() {
   # Settings up maven
@@ -40,7 +56,7 @@ initMaven() {
   mkdir "$MAVEN_BASE_DIR"
   mkdir "$MAVEN_BASE_DIR/repo"
   echo "Copying and adopting settings.xml to $MAVEN_BASE_DIR/settings.xml"
-  cat maven/settings.xml | sed s~#mavenlocal#~"$MAVEN_BASE_DIR\/repo"~ >"$MAVEN_BASE_DIR/settings.xml"
+  cat "$MAVEN_SETTING_FILE_TEMPLATE" | sed s~#mavenlocal#~"$MAVEN_BASE_DIR\/repo"~ >"$MAVEN_BASE_DIR/settings.xml"
   echo "Copying settings.xml done"
   SAVEDWD=$(pwd)
   echo "$SAVEDWD"
@@ -48,13 +64,7 @@ initMaven() {
   echo "Filling an initial Maven Repo at $MAVEN_BASE_DIR/repo"
   export MAVEN_OPTS=-Dmaven.repo.local="$MAVEN_BASE_DIR/repo"
   mvn help:system
-  cd "../modules/testapp-bom"
-  mvn install
-  cd "../testapp-parentpom"
-  mvn install
-  cd "../testapp-module"
-  mvn dependency:resolve dependency:resolve-plugins
-  cd "$SAVEDWD"
+
 }
 # Gradle Setup
 initGradle() {
@@ -65,7 +75,7 @@ initGradle() {
     rm -Rf "$GRADLEHOMEDIR"
   fi
   mkdir -p "$TARGET_DIR/gradle/home"
-  git clone "$USER@$GITREPO" "$GRADLEHOMEDIR"
+  git clone "$USER@$REPO_GRADLEHOMEDIR" "$GRADLEHOMEDIR"
   export GRADLE_USER_HOME=$GRADLEHOMEDIR
   ./gradlew --version
   ./gradlew tasks --group="Apg Gradle Jenkinsrunner"
@@ -83,7 +93,11 @@ fi
 
 #Defaults
 # Temp fix in Apg fork
-GITREPO="git.apgsga.ch:/var/git/repos/apg-gradle-properties.git"
+REPO_GRADLEHOMEDIR="git.apgsga.ch:/var/git/repos/apg-gradle-properties.git"
+REPO_TESTMODULES="https://github.com/apgsga-it/apg-gradle-plugins.git"
+TEST_MODULES_REPO_DIR="/tmp/testmodules"
+TEST_MODULES_ROOT_DIR="$TEST_MODULES_REPO_DIR/integration/modules"
+MAVEN_SETTING_FILE_TEMPLATE="src/main/resources/maven/settings.xml"
 BRANCH=master
 TARGET_DIR="$HOME/jenkinstests"
 MAVEN_DIR=maven
@@ -144,7 +158,7 @@ while true; do
     ;;
   esac
 done
-echo "Running with Target directory=$TARGET_DIR, repo=$GITREPO, user:$USER"
+echo "Running with Target directory=$TARGET_DIR, repo=$REPO_GRADLEHOMEDIR, user:$USER"
 # Preconditions
 mvn --version >/dev/null 2>&1 || {
   exit 1
@@ -154,11 +168,11 @@ git --version >/dev/null 2>&1 || {
   exit 1
 }
 if [ ! -d "$TARGET_DIR" ]; then
-  echo >&2 "Installation directtory $TARGET_DIR is missing.  Aborting."
+  echo >&2 "Installation directory $TARGET_DIR is missing.  Aborting."
   exit 1
 fi
 if [ ! -d "$TARGET_DIR" ]; then
-  echo >&2 "Installation directtory $TARGET_DIR is missing.  Aborting."
+  echo >&2 "Installation directory $TARGET_DIR is missing.  Aborting."
   exit 1
 fi
 if [ -z "$USER" ]; then
@@ -167,6 +181,7 @@ if [ -z "$USER" ]; then
 fi
 if [ $MAVEN == "y" ]; then
   initMaven
+  coAndBuildTestModules
 fi
 if [ $GRADLE == "y" ]; then
   initGradle

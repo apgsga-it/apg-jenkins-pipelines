@@ -11,11 +11,11 @@ project.ext {
 class JenkinsRunnerExec extends JavaExec {
     public static final String APG_TASK_GROUP = "Apg Gradle Jenkinsrunner"
     @Input
-    public def workspaceDir
+    public def pipelineFile
 
     @Input def appArgs = []
 
-    @Input def jenkinsWorkspaceDirPath = "${project.projectDir.absolutePath}/../modules"
+    @Input def jenkinsWorkspaceDirPath = "${project.projectDir.absolutePath}/jenkinsWorkspace"
 
     JenkinsRunnerExec() {
         group = APG_TASK_GROUP
@@ -30,7 +30,7 @@ class JenkinsRunnerExec extends JavaExec {
                 "-p",
                 "${project.ext.runnerInstallationDir}/jenkins/plugins",
                 "--runWorkspace", "${jenkinsWorkspaceDirPath}",
-                "-f","${project.projectDir}/${workspaceDir}"
+                "-f","${project.projectDir}/${pipelineFile}"
         ] + appArgs
         logging.captureStandardOutput LogLevel.INFO
         logging.captureStandardError LogLevel.ERROR
@@ -45,9 +45,9 @@ mavenSettings {
 }
 
 task runTestLibHelloWorld(type: JenkinsRunnerExec) {
-    workspaceDir = "jenkinsHelloWorldLib"
-    environment = [CASC_JENKINS_CONFIG:"${project.projectDir}/jenkinsHelloWorldLib/jenkins.yaml"]
-    description = "Runs Pipeline in ${workspaceDir} , which loads the Pipeline libarary from https://github.com/chhex/jenkins-pipeline-testlib.git  "
+    pipelineFile = "src/test/groovy/helloworld.groovy"
+    environment = [CASC_JENKINS_CONFIG:"${project.projectDir}/src/test/resources/helloworld.yaml"]
+    description = "Runs Pipeline in ${pipelineFile} , which loads the Pipeline libarary from https://github.com/chhex/jenkins-pipeline-testlib.git  "
 
 }
 
@@ -61,15 +61,15 @@ task runTestPkgAndDeploy(type: JenkinsRunnerExec) {
                       "-a", "sshUser=${sshUser}",
                       "-a", "sshPw=${sshPw}",
                       "-a", "downLoadDir=${downLoadDir}"]
-    workspaceDir = "jenkinsPkgAndDeploy"
-    description = "Runs Pipeline in the dir ${workspaceDir}"
+    pipelineFile = "jenkinsPkgAndDeploy"
+    description = "Runs Pipeline in the dir ${pipelineFile}"
 
 }
 
 task runTestBuild(type: JenkinsRunnerExec) {
     appArgs = ["-a", "modules=testapp-bom:testapp-parentpom:testapp-module:testapp-service"]
-    workspaceDir = "jenkinsBuild"
-    description = "Runs Pipeline in the dir ${workspaceDir}"
+    pipelineFile = "jenkinsBuild"
+    description = "Runs Pipeline in the dir ${pipelineFile}"
 }
 
 

@@ -175,3 +175,4 @@ jenkinsHome/*
 Jenkinsfile
 /integration/jenkins-pipeline-tests/runner/bin/
 /integration/jenkins-pipeline-tests/runner/jenkins/
+/jenkinsWorkspace@libs/
