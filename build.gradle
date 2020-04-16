@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id "nu.studer.credentials" version "2.1"
     id 'net.linguica.maven-settings' version '0.5'
-
 }
 project.ext {
     runnerInstallationDir = project.hasProperty('installDir') ? project.property('installDir') : System.getProperty("user.home") + "/jenkinstests/runner"
@@ -72,4 +71,6 @@ task runTestBuild(type: JenkinsRunnerExec) {
     workspaceDir = "jenkinsBuild"
     description = "Runs Pipeline in the dir ${workspaceDir}"
 }
+
+
 
