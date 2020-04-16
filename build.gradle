@@ -1,13 +1,30 @@
 plugins {
     id 'java'
     id "nu.studer.credentials" version "2.1"
-    id 'net.linguica.maven-settings' version '0.5'
 }
+
 project.ext {
     runnerInstallationDir = project.hasProperty('installDir') ? project.property('installDir') : System.getProperty("user.home") + "/jenkinstests/runner"
     mavenSettingsFile = project.hasProperty('mavenSettings') ? project.property('mavenSettings') : '$USER_HOME/.m2/settings.xml'
 
 }
+
+repositories {
+    mavenLocal()
+    maven {
+        url = "https://repo.jenkins-ci.org/public"
+    }
+}
+
+dependencies {
+    compile group: 'com.apgsga.jenkins' , name: 'apg-jenkins-pipeline-libs', version: '0.1-SNAPSHOT'
+    compile group: 'org.codehaus.groovy' , name: 'groovy-all', version: '2.4.9'
+    compile group: 'javax.mail', name: 'mail', version: '1.4.1'
+    compile group: 'org.jenkins-ci.main', name: 'jenkins-core', version: '2.222'
+    compile group: 'javax.servlet', name: 'servlet-api', version: '2.5'
+}
+
+
 class JenkinsRunnerExec extends JavaExec {
     public static final String APG_TASK_GROUP = "Apg Gradle Jenkinsrunner"
     @Input
@@ -40,27 +57,16 @@ class JenkinsRunnerExec extends JavaExec {
 
 }
 
-mavenSettings {
-    userSettingsFileName  = project.ext.mavenSettingsFile
-}
-
 task runTestLibHelloWorld(type: JenkinsRunnerExec) {
     pipelineFile = "src/test/groovy/helloworld.groovy"
     environment = [CASC_JENKINS_CONFIG:"${project.projectDir}/src/test/resources/helloworld.yaml"]
     description = "Runs Pipeline in ${pipelineFile} , which loads the Pipeline libarary from https://github.com/chhex/jenkins-pipeline-testlib.git  "
 
 }
-repositories {
-    mavenLocal()
-    maven {
-        url = "https://repo.jenkins-ci.org/public"
-    }
-}
 
-dependencies {
-    compile group: 'com.apgsga.jenkins' , name: 'apg-jenkins-pipeline-libs', version: '0.1-SNAPSHOT'
-    compile group: 'org.codehaus.groovy' , name: 'groovy-all', version: '2.4.9'
-    compile group: 'javax.mail', name: 'mail', version: '1.4.1'
-    compile group: 'org.jenkins-ci.main', name: 'jenkins-core', version: '2.222'
-    compile group: 'javax.servlet', name: 'servlet-api', version: '2.5'
+task runBuildPipeline(type: JenkinsRunnerExec) {
+    pipelineFile = "src/main/groovy/patchProdBuildPipeline.groovy"
+    environment = [CASC_JENKINS_CONFIG:"${project.projectDir}/src/main/resources/jenkins/jenkins.yaml"]
+    description = "Runs Pipeline in ${pipelineFile} "
+    appArgs = ["-a", "PARAMETER=${project.projectDir}/src/test/resources/Patch5401.json"]
 }

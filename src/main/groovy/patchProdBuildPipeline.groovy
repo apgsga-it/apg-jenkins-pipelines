@@ -18,6 +18,8 @@ properties([
 
 def patchConfig = patchfunctions.readPatchFile(params.PARAMETER)
 patchfunctions.initPatchConfig(patchConfig,params)
+println "PatchConfig:"
+println patchConfig.toString()
 //
 //// Load Target System Mappings
 //def targetSystemsMap = patchfunctions.loadTargetsMap()
