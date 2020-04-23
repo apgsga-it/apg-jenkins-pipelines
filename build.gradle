@@ -10,14 +10,17 @@ project.ext {
 }
 
 repositories {
-    mavenLocal()
     maven {
         url = "https://repo.jenkins-ci.org/public"
     }
+    mavenLocal()
+    mavenCentral()
+
 }
 
 dependencies {
     compile group: 'com.apgsga.jenkins' , name: 'apg-jenkins-pipeline-libs', version: '0.1-SNAPSHOT'
+    compile group: 'com.apgsga.jenkins' , name: 'apg-jenkins-pipeline-testlibs', version: '0.1-SNAPSHOT'
     compile group: 'org.codehaus.groovy' , name: 'groovy-all', version: '2.4.9'
     compile group: 'javax.mail', name: 'mail', version: '1.4.1'
     compile group: 'org.jenkins-ci.main', name: 'jenkins-core', version: '2.222'
@@ -58,10 +61,16 @@ class JenkinsRunnerExec extends JavaExec {
 }
 
 task runTestLibHelloWorld(type: JenkinsRunnerExec) {
-    pipelineFile = "src/test/groovy/helloworld.groovy"
-    environment = [CASC_JENKINS_CONFIG:"${project.projectDir}/src/test/resources/helloworld.yaml"]
+    pipelineFile = "src/test/groovy/testHelloWorldPipeline.groovy"
+    environment = [CASC_JENKINS_CONFIG:"${project.projectDir}/src/test/resources/testlibs.yaml"]
     description = "Runs Pipeline in ${pipelineFile} , which loads the Pipeline libarary from https://github.com/chhex/jenkins-pipeline-testlib.git  "
+}
 
+
+task runTestAcceptPipeline(type: JenkinsRunnerExec) {
+    pipelineFile = "src/test/groovy/testAcceptPipeline.groovy"
+    environment = [CASC_JENKINS_CONFIG:"${project.projectDir}/src/test/resources/testlibs.yaml"]
+    description = "Runs Pipeline in ${pipelineFile} , which loads the Pipeline libarary from https://github.com/chhex/jenkins-pipeline-testlib.git  "
 }
 
 task runBuildPipeline(type: JenkinsRunnerExec) {
