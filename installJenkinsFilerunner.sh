@@ -3,7 +3,9 @@
 # Usage info
 show_help() {
   cat <<EOF
-Usage: ${0##*/} [-d BUILDDIR] [-r GITREPO] [-b BRANCH] [-i INSTALLDIR] [ -m  MAVENBASEDIR ] -ns
+Usage: ${0##*/} [-d BUILDDIR] [-r GITREPO] [-b BRANCH] [-i INSTALLDIR] [ -nsx ]
+Setups a Installation necessary for Jenkinspipeline Tests
+
 Builds and Installs the jenkinsfile-runner to a installation Dir to be used with the Jenkinspipeline Tests
 It clones the jenkinsfile-runner from GITREPO into a BUILDDIR and builds. After the build the respective artifacts are
 copied to INSTALLDIR
@@ -12,10 +14,10 @@ copied to INSTALLDIR
     -d=BUILDDIR target of the git clone of the git repo , defaults to ~/git/jenkinsfile-runner
     -r=GITREPO  git repo, from which the jenkinsfile runner will be cloned, defaults to https://github.com/apgsga-it/jenkinsfile-runner.git
     -b=BRANCH   git of the git repo, defaults to master
-    -i=INSTALLDIR Installation Dir of the jenkinsfile runner, defaults to ~/jenkinstests/runner
-    -m=MAVENBASEDIR alternative Mavenlocal Base Directory, expected to have  maven directory as child and a settings.xml, optional
+    -i=INSTALLDIR Installation Dir for the Jenkinstests, defaults to ~/jenkinstests
     -n          do not delete and clone the BUILDDIR, if it exists
     -s          skip maven package of jenkinsfile-runner
+    -x          no MAVENBASEDIR
 
 EOF
 }
@@ -26,7 +28,7 @@ preconditions() {
     exit 1
   }
   git --version >/dev/null 2>&1 || {
-    echo >&2 "git is either not in Path or Installed.  Aborting."
+    echo >&2 "git is either not in Path or Installed.  Aborting."./
     exit 1
   }
   if [ ! -d $RUNNER_DIR ]; then
@@ -74,57 +76,33 @@ buildAndInstallJenkinsRunner() {
     exit 1
   }
   pwd
-  cd $RUNNER_DIR || {
+  cd "$RUNNER_DIR" || {
     echo >&2 "Could'nt cd to $RUNNER_DIR.  Aborting."
     exit 1
   }
   pwd
-  if [ -d $BIN_DIR ]; then
+  if [ -d "$BIN_DIR" ]; then
     echo "Deleting Target bin directory $RUNNER_DIR/$BIN_DIR"
-    rm -Rf $BIN_DIR
+    rm -Rf "$BIN_DIR"
     echo "Done"
   fi
-  if [ -d $JENKINS_DIR ]; then
+  if [ -d "$JENKINS_DIR" ]; then
     echo "Deleting jenkins directory  $RUNNER_DIR/$JENKINS_DIR"
-    rm -Rf $JENKINS_DIR
+    rm -Rf "$JENKINS_DIR"
     echo "Done"
   fi
-  mkdir $JENKINS_DIR
-  mkdir $BIN_DIR
+  mkdir "$JENKINS_DIR"
+  mkdir "$BIN_DIR"
   cp "$TARGET_DIR/app/target/jenkinsfile-runner-standalone.jar" "$BIN_DIR"
   cp -r "$TARGET_DIR/vanilla-package/target/war" "$JENKINS_DIR"
   cp -r "$TARGET_DIR/vanilla-package/target/plugins" "$JENKINS_DIR"
   echo "Installation of jenkinsfile-runner done"
-  echo "Testing installation by executing Gradle Test Build"
   cd "$SAVEDWD" || {
     echo >&2 "Could'nt cd to $SAVEDWD.  Aborting."
     exit 1
   }
-}
-testInstallation() {
-  ./gradlew tasks --group="Apg Gradle Jenkinsrunner"
-  if [[ -z "$MAVENBASEDIR" ]]; then
-    ./gradlew runTestLibHelloWorld -PinstallDir="$RUNNER_DIR" -PmavenSettings="$MAVENBASEDIR/settings.xml" --info --stacktrace
-  else
-    ./gradlew runTestLibHelloWorld -PinstallDir="$RUNNER_DIR" --info --stacktrace
-  fi
 }
 
-installServlessApsCli() {
-  SAVEDWD=$(pwd)
-  cd $INSTALL_DIR
-  mvn dependency:copy -Dartifact=$GROUPID:$ARTIFACTID:$VERSION:zip -DoutputDirectory=/tmp
-  if [ -d $APSCLI_DIR ]; then
-    echo "Deleting Target pkg directory $APSCLI_DIR"
-    rm -Rf $APSCLI_DIR
-    echo "Done"
-  fi
-  unzip "/tmp/$ARTIFACTID-$VERSION.zip"
-  cd "$SAVEDWD" || {
-    echo >&2 "Could'nt cd to $SAVEDWD.  Aborting."
-    exit 1
-  }
-}
 # saner programming env: these switches turn some bugs into errors
 set -o errexit -o pipefail -o noclobber -o nounset
 # -allow a command to fail with !’s side effect on errexit
@@ -149,14 +127,14 @@ BIN_DIR=bin
 JENKINS_DIR=jenkins
 CLEAN=Y
 SKIP=n
-MAVENBASEDIR=
+MAVENBASEDIR="$HOME/jenkinstests/maven"
 GROUPID=com.apgsga.patchframework
 ARTIFACTID=apg-patch-service-cmdclient
 VERSION=2.0.0-SNAPSHOT
 
 #Command line Options
-OPTIONS=hd:r:b:i:m:l:ns
-LONGOPTS=help,builddir:,repo:,branch:,installdir:,mavenLocal:,mavenSettings:,noclean,skip
+OPTIONS=hd:r:b:i:ns
+LONGOPTS=help,builddir:,repo:,branch:,installdir:,noclean,skip
 
 # -regarding ! and PIPESTATUS see above
 # -temporarily store output to be able to check for errors
@@ -189,14 +167,13 @@ while true; do
     shift 2
     ;;
   -i | --installdir)
-    RUNNER_DIR=$2
-    RUNNER_DIR="${RUNNER_DIR/#\~/$HOME}"
+    INSTALL_DIR=$2
+    INSTALL_DIR="${INSTALL_DIR/#\~/$HOME}"
     shift 2
     ;;
-  -m | --mavenLocal)
-    MAVENBASEDIR=$2
-    MAVENBASEDIR="${MAVENBASEDIR/#\~/$HOME}"
-    shift 2
+  -x | --nomaven)
+    MAVENBASEDIR=
+    shift
     ;;
   -n | --noclean)
     CLEAN=n
@@ -219,4 +196,3 @@ done
 echo "Running with builddir=$TARGET_DIR, repo=$REPO, branch:$BRANCH, installdir=$RUNNER_DIR, clean=$CLEAN"
 preconditions
 buildAndInstallJenkinsRunner
-testInstallation
