@@ -82,5 +82,5 @@ fi
 ./initLocalRepos.sh -u "$USER" -i "$INSTALL_DIR"
 ./installJenkinsFilerunner.sh -i "$INSTALL_DIR"
 ./installApscli.sh -i "$INSTALL_DIR"
-./testJenkinsPipeline.sh -i "$INSTALL_DIR" -a
+./runJenkinsPipeline.sh -i "$INSTALL_DIR" -a
 echo "Done"
