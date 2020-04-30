@@ -4,7 +4,7 @@ plugins {
 }
 
 project.ext {
-    runnerInstallationDir = project.hasProperty('installDir') ? project.property('installDir') : System.getProperty("user.home") + "/jenkinstests/runner"
+    runnerInstallationDir = project.hasProperty('installDir') ? project.property('installDir') : "/opt/jenkinstests/runner"
     mavenSettingsFile = project.hasProperty('mavenSettings') ? project.property('mavenSettings') : '$USER_HOME/.m2/settings.xml'
 
 }

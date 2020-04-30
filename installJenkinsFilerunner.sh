@@ -31,8 +31,8 @@ preconditions() {
     echo >&2 "git is either not in Path or Installed.  Aborting."./
     exit 1
   }
-  if [ ! -d $RUNNER_DIR ]; then
-    echo >&2 "Installation directtory $RUNNER_DIR for jenkinsfile-runner is missing.  Aborting."
+  if [ ! -d "$INSTALL_DIR" ]; then
+    echo >&2 "Base Installation directtory $INSTALL_DIR for jenkinsfile-runner is missing.  Aborting."
     exit 1
   fi
   if [ ! -z "$MAVENBASEDIR" ]; then
@@ -53,10 +53,15 @@ preconditions() {
 buildAndInstallJenkinsRunner() {
   SAVEDWD=$(pwd)
   echo "$SAVEDWD"
+  if [ -d "$RUNNER_DIR" ]  ]; then
+    echo "$RUNNER_DIR will be deleted recursively "
+    rm -Rf "$RUNNER_DIR"
+  fi
+  mkdir "$RUNNER_DIR"
   # Target Directory
   if [ -d "$TARGET_DIR" ] && [ $CLEAN == "Y" ]; then
     echo "$TARGET_DIR will be deleted recursively "
-    rm -Rf $TARGET_DIR
+    rm -Rf "$TARGET_DIR"
   fi
   if [ ! -d "$TARGET_DIR" ]; then
     echo "Cloneing jenkinsfile-runner from $REPO to $TARGET_DIR from branch: $BRANCH"
@@ -120,14 +125,14 @@ TARGET_DIR=~/git/jenkinsfile-runner
 # Temp fix in Apg fork
 REPO=https://github.com/apgsga-it/jenkinsfile-runner.git
 BRANCH=master
-INSTALL_DIR="$HOME/jenkinstests"
+INSTALL_DIR="/opt/jenkinstests"
 RUNNER_DIR="$INSTALL_DIR/runner"
 APSCLI_DIR="$INSTALL_DIR/apscli"
 BIN_DIR=bin
 JENKINS_DIR=jenkins
 CLEAN=Y
 SKIP=n
-MAVENBASEDIR="$HOME/jenkinstests/maven"
+MAVENBASEDIR="/opt/jenkinstests/maven"
 GROUPID=com.apgsga.patchframework
 ARTIFACTID=apg-patch-service-cmdclient
 VERSION=2.0.0-SNAPSHOT
@@ -193,6 +198,7 @@ while true; do
     ;;
   esac
 done
+echo "Running $0"
 echo "Running with builddir=$TARGET_DIR, repo=$REPO, branch:$BRANCH, installdir=$RUNNER_DIR, clean=$CLEAN"
 preconditions
 buildAndInstallJenkinsRunner

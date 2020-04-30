@@ -11,7 +11,7 @@ Runs all installation and initialization scripts for Jenkinspipeline Tests:
 
     -h          display this help and exit
     -u=USER     userid for the gitrepo, from which apg-gradle-properties will be clone. Mandatory option
-    -i=INSTALL_DIR Installation Directory , defaults to "$HOME/jenkinstests"
+    -i=INSTALL_DIR Installation Directory , defaults to "/opt/jenkinstests"
 EOF
 }
 # saner programming env: these switches turn some bugs into errors
@@ -24,7 +24,7 @@ if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
   exit 1
 fi
 
-INSTALL_DIR="$HOME/jenkinstests"
+INSTALL_DIR="/opt/jenkinstests"
 USER=
 
 #Command line Options
@@ -69,9 +69,18 @@ while true; do
 done
 echo "Running with Target directory=$INSTALL_DIR, user:$USER"
 echo "Running initLocalRepos.sh, installJenkinsFulerunner.sh, installApscli.sh and testJenkinsPipeline.sh with defaults"
+if [  -d "$INSTALL_DIR" ]; then
+  echo "Removing current Installation: $INSTALL_DIR"
+  sudo rm -Rf  "$INSTALL_DIR"
+fi
+if [ ! -d "$INSTALL_DIR" ]; then
+  echo "Creating INSTALL_DIR: $INSTALL_DIR"
+  sudo mkdir "$INSTALL_DIR"
+  echo "Changing Owner to current User"
+  sudo chown -R $(id -u):$(id -g) "$INSTALL_DIR"
+fi
 ./initLocalRepos.sh -u "$USER" -i "$INSTALL_DIR"
 ./installJenkinsFilerunner.sh -i "$INSTALL_DIR"
 ./installApscli.sh -i "$INSTALL_DIR"
-./testJenkinsPipeline.sh -i "$INSTALL_DIR"
+./testJenkinsPipeline.sh -i "$INSTALL_DIR" -a
 echo "Done"
-

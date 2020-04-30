@@ -21,13 +21,13 @@ patchfunctions.initPatchConfig(patchConfig,params)
 println "PatchConfig:"
 println patchConfig.toString()
 //
-//// Load Target System Mappings
-//def targetSystemsMap = patchfunctions.loadTargetsMap()
-//patchfunctions.log("TargetSystemsMap : ${targetSystemsMap} ")
-//// Create a local Maven Repo for Pipeline
-//patchfunctions.mavenLocalRepo(patchConfig)
-//// Retrieve event. State, which will re - done
-//patchfunctions.redoToState(patchConfig)
+// Load Target System Mappings
+def targetSystemsMap = patchfunctions.loadTargetsMap()
+patchfunctions.log("TargetSystemsMap : ${targetSystemsMap} ")
+// Create a local Maven Repo for Pipeline
+patchfunctions.mavenLocalRepo(patchConfig)
+// Retrieve event. State, which will re - done
+patchfunctions.redoToState(patchConfig)
 //
 //// Mainline
 //

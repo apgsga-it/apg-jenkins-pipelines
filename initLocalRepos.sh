@@ -99,7 +99,7 @@ TEST_MODULES_REPO_DIR="/tmp/testmodules"
 TEST_MODULES_ROOT_DIR="$TEST_MODULES_REPO_DIR/integration/modules"
 MAVEN_SETTING_FILE_TEMPLATE="src/main/resources/maven/settings.xml"
 BRANCH=master
-INSTALL_DIR="$HOME/jenkinstests"
+INSTALL_DIR="/opt/jenkinstests"
 MAVEN_DIR=maven
 GRADLE_DIR=gradle
 USER=
@@ -158,6 +158,7 @@ while true; do
     ;;
   esac
 done
+echo "Running $0"
 echo "Running with Target directory=$INSTALL_DIR, repo=$REPO_GRADLEHOMEDIR, user:$USER"
 # Preconditions
 mvn --version >/dev/null 2>&1 || {

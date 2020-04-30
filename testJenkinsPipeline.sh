@@ -8,14 +8,15 @@ Usage: ${0##*/} [-i INSTALLDIR] [ -x ]
 Tests the Jenkinsfilerunner and apscli
 
     -h          display this help and exit
-    -i=INSTALLDIR Installation Dir for the Jenkinstests, defaults to ~/jenkinstests
-    -x          no MAVENBASEDIR
+    -i=INSTALLDIR Installation Dir for the Jenkinstests, defaults to /opt/jenkinstests
+    -t=GRADLE_TASK Gradle Task to execute , defaults to runTestLibHelloWorld
+    -a          Test apscli
 
 EOF
 }
 preconditions() {
   # Preconditions
-  if [ ! -d $RUNNER_DIR ]; then
+  if [ ! -d "$RUNNER_DIR" ]; then
     echo >&2 "Installation directtory $RUNNER_DIR for jenkinsfile-runner is missing.  Aborting."
     exit 1
   fi
@@ -37,11 +38,8 @@ preconditions() {
 
 testTestRunnerInstallation() {
   ./gradlew tasks --group="Apg Gradle Jenkinsrunner"
-  if [[ -z "$MAVENBASEDIR" ]]; then
-    ./gradlew runTestLibHelloWorld -PinstallDir="$RUNNER_DIR" -PmavenSettings="$MAVENBASEDIR/settings.xml" --info --stacktrace
-  else
-    ./gradlew runTestLibHelloWorld -PinstallDir="$RUNNER_DIR" --info --stacktrace
-  fi
+  ./gradlew "$GRADLE_TASK" -PinstallDir="$RUNNER_DIR" -PmavenSettings="$MAVENBASEDIR/settings.xml" -Dgradle.user.home="$GRADLE_HOME" --info --stacktrace
+
 }
 testApsCli() {
   SAVEDWD=$(pwd)
@@ -62,14 +60,17 @@ if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
 fi
 
 #Defaults
-INSTALL_DIR="$HOME/jenkinstests"
+INSTALL_DIR="/opt/jenkinstests"
 APSCLI_DIR="$INSTALL_DIR/apscli"
 RUNNER_DIR="$INSTALL_DIR/runner"
-MAVENBASEDIR="$HOME/jenkinstests/maven"
+GRADLE_HOME="$INSTALL_DIR/gradle/home"
+MAVENBASEDIR="/opt/jenkinstests/maven"$INSTALL_DIR''
+GRADLE_TASK=runTestLibHelloWorld
+TEST_APSCLI=n
 
 #Command line Options
-OPTIONS=i:x
-LONGOPTS=help,installdir:,nomaven
+OPTIONS=i:t:a
+LONGOPTS=help,installdir:,gradleTask:,testApsCli
 
 # -regarding ! and PIPESTATUS see above
 # -temporarily store output to be able to check for errors
@@ -93,8 +94,12 @@ while true; do
     INSTALL_DIR="${INSTALL_DIR/#\~/$HOME}"
     shift 2
     ;;
-  -x | --nomaven)
-    MAVENBASEDIR=
+   -t | --gradleTask)
+    GRADLE_TASK=$2
+    shift 2
+    ;;
+   -a | --testApsCli)
+    TEST_APSCLI=y
     shift
     ;;
   --)
@@ -107,6 +112,9 @@ while true; do
     ;;
   esac
 done
-echo "Running with binstalldir=$INSTALL_DIR, maven=$MAVENBASEDIR"
+echo "Running $0"
+echo "Running with Installation Dir=$INSTALL_DIR, maven=$MAVENBASEDIR"
 testTestRunnerInstallation
-testApsCli
+if [ "$TEST_APSCLI" == "y" ]; then
+  testApsCli
+fi
