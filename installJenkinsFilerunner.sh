@@ -53,7 +53,7 @@ preconditions() {
 buildAndInstallJenkinsRunner() {
   SAVEDWD=$(pwd)
   echo "$SAVEDWD"
-  if [ -d "$RUNNER_DIR" ]  ]; then
+  if [ -d "$RUNNER_DIR" ] ]; then
     echo "$RUNNER_DIR will be deleted recursively "
     rm -Rf "$RUNNER_DIR"
   fi
@@ -73,6 +73,7 @@ buildAndInstallJenkinsRunner() {
   fi
   cd "$TARGET_DIR"
   pwd
+  export MAVEN_OPTS=-Dmaven.repo.local="$MAVEN_BASE_DIR/repo"
   if [ $SKIP == 'n' ]; then
     mvn clean package
   fi
@@ -126,6 +127,7 @@ TARGET_DIR=~/git/jenkinsfile-runner
 REPO=https://github.com/apgsga-it/jenkinsfile-runner.git
 BRANCH=master
 INSTALL_DIR="/opt/jenkinstests"
+MAVEN_BASE_DIR="$INSTALL_DIR/maven"
 RUNNER_DIR="$INSTALL_DIR/runner"
 APSCLI_DIR="$INSTALL_DIR/apscli"
 BIN_DIR=bin

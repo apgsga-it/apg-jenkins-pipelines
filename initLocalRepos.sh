@@ -48,7 +48,6 @@ coAndBuildTestModules() {
 initMaven() {
   # Settings up maven
   # Create Maven Directory
-  MAVEN_BASE_DIR="$INSTALL_DIR/maven"
   if [ -d "$MAVEN_BASE_DIR" ]; then
     echo "Deleteing Maven Target Dir:$MAVEN_BASE_DIR recursively "
     rm -Rf "$MAVEN_BASE_DIR"
@@ -69,7 +68,7 @@ initMaven() {
 # Gradle Setup
 initGradle() {
   # Createing a initially loaded Gradle User Home
-  GRADLEHOMEDIR="$INSTALL_DIR/gradle/home"
+
   if [ -d "$GRADLEHOMEDIR" ]; then
     echo "Deleteing Gradle Target Dir: $GRADLEHOMEDIR recursively "
     rm -Rf "$GRADLEHOMEDIR"
@@ -77,8 +76,8 @@ initGradle() {
   mkdir -p "$INSTALL_DIR/gradle/home"
   git clone "$USER@$REPO_GRADLEHOMEDIR" "$GRADLEHOMEDIR"
   export GRADLE_USER_HOME=$GRADLEHOMEDIR
-  ./gradlew --version
-  ./gradlew tasks --group="Apg Gradle Jenkinsrunner"
+  ./gradlew --version -Dgradle.user.home="$GRADLEHOMEDIR"
+  ./gradlew tasks --group="Apg Gradle Jenkinsrunner" -Dgradle.user.home="$GRADLEHOMEDIR"
 }
 
 # saner programming env: these switches turn some bugs into errors
@@ -100,6 +99,8 @@ TEST_MODULES_ROOT_DIR="$TEST_MODULES_REPO_DIR/integration/modules"
 MAVEN_SETTING_FILE_TEMPLATE="src/main/resources/maven/settings.xml"
 BRANCH=master
 INSTALL_DIR="/opt/jenkinstests"
+GRADLEHOMEDIR="$INSTALL_DIR/gradle/home"
+MAVEN_BASE_DIR="$INSTALL_DIR/maven"
 MAVEN_DIR=maven
 GRADLE_DIR=gradle
 USER=

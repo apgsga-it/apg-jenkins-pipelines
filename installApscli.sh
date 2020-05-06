@@ -42,12 +42,8 @@ preconditions() {
 installServlessApsCli() {
   SAVEDWD=$(pwd)
   cd "$INSTALL_DIR"
-  if [ -f "/tmp/$ARTIFACTID-$VERSION.zip" ]; then
-    echo "Deleting Zip: /tmp/$ARTIFACTID-$VERSION.zip"
-    rm "/tmp/$ARTIFACTID-$VERSION.zip"
-    echo "Done"
-  fi
   rm -f "/tmp/$ARTIFACTID*"
+  export MAVEN_OPTS=-Dmaven.repo.local="$MAVEN_BASE_DIR/repo"
   mvn dependency:copy -Dartifact=$GROUPID:$ARTIFACTID:$VERSION:zip -DoutputDirectory=/tmp
   if [ -d "$APSCLI_DIR" ]; then
     echo "Deleting Target pkg directory $APSCLI_DIR"
