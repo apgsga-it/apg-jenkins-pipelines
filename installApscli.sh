@@ -50,7 +50,7 @@ installServlessApsCli() {
     rm -Rf "$APSCLI_DIR"
     echo "Done"
   fi
-  unzip "/tmp/$ARTIFACTID*.zip" 
+  unzip -o "/tmp/$ARTIFACTID*.zip"
   # Move Data Directory
   if [ -d "data" ]; then
     echo "Deleting data  directory"
