@@ -28,7 +28,7 @@
   ],
   "services": [
     {
-      "serviceName": "It21Ui",
+      "serviceName": "digiflex-jadas-pkg",
       "microServiceBranch": "it21_release_9_1_0_admin_uimig",
       "baseVersionNumber": null,
       "revisionMnemoPart": null,
@@ -38,9 +38,8 @@
         {
           "artifactId": "zentraldispo-dao",
           "groupId": "com.affichage.it21.vk",
-          "name": null,
+          "name": "testmodule/zentraldispo-dao",
           "version": "9.1.0.ADMIN-UIMIG-SNAPSHOT",
-          "className": "com.apgsga.microservice.patch.api.MavenArtifact"
         }
       ]
     }

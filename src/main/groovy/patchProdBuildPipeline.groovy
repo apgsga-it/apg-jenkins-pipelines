@@ -25,27 +25,10 @@ println patchConfig.toString()
 def targetSystemsMap = patchfunctions.loadTargetsMap()
 patchfunctions.log("TargetSystemsMap : ${targetSystemsMap} ")
 // Create a local Maven Repo for Pipeline
+// TODO (che, jhe) 5.5.20: This does'nt make sense, mavenLocal should not be Node bound
 patchfunctions.mavenLocalRepo(patchConfig)
 // Retrieve event. State, which will re - done
 patchfunctions.redoToState(patchConfig)
-//
-//// Mainline
-//
-//
+
 //// Artefacts are tagged = ready to be built and deployed with start of Patch Pipeline
-//def target = targetSystemsMap.get('Entwicklung')
-//patchfunctions.stage(target,"Installationsbereit",patchConfig,"Notification", patchfunctions.&notify)
-//def phases = targetSystemsMap.keySet()
-//phases.removeElement('Entwicklung')
-//
-//phases.each { envName ->
-//	target = targetSystemsMap.get(envName)
-//	assert target != null
-//	patchfunctions.saveTarget(patchConfig,target)
-//
-//	// Approve to make Patch "Installationsbereit" for target
-//	patchfunctions.stage(target,"Installationsbereit",patchConfig,"Approve", patchfunctions.&approveBuild)
-//	patchfunctions.stage(target,"Installationsbereit",patchConfig,"Build", patchfunctions.&patchBuildsConcurrent)
-//
-//}
-//
+patchfunctions.stage(target,"Installationsbereit",patchConfig,"Build", patchfunctions.&patchBuildsConcurrent)

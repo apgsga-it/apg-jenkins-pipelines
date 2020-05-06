@@ -47,13 +47,13 @@ installServlessApsCli() {
     rm "/tmp/$ARTIFACTID-$VERSION.zip"
     echo "Done"
   fi
-  mvn dependency:copy -Dartifact=$GROUPID:$ARTIFACTID:$VERSION:zip -DoutputDirectory=/tmp
+  mvn dependency:copy -Dartifact=$GROUPID:$ARTIFACTID:$VERSION:zip -DoutputAbsoluteArtifactFilename=/tmp/apscli.zip
   if [ -d "$APSCLI_DIR" ]; then
     echo "Deleting Target pkg directory $APSCLI_DIR"
     rm -Rf "$APSCLI_DIR"
     echo "Done"
   fi
-  unzip "/tmp/$ARTIFACTID-$VERSION.zip"
+  unzip "/tmp/apscli.zip"
   # Move Data Directory
   if [ -d "data" ]; then
     echo "Deleting data  directory"
