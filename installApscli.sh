@@ -43,7 +43,7 @@ installServlessApsCli() {
   SAVEDWD=$(pwd)
   cd "$INSTALL_DIR"
   rm -f "/tmp/$ARTIFACTID*"
-  export MAVEN_OPTS=-Dmaven.repo.local="$MAVEN_BASE_DIR/repo"
+  export MAVEN_OPTS=-Dmaven.repo.local="$MAVENBASEDIR/repo"
   mvn dependency:copy -Dartifact=$GROUPID:$ARTIFACTID:$VERSION:zip -DoutputDirectory=/tmp
   if [ -d "$APSCLI_DIR" ]; then
     echo "Deleting Target pkg directory $APSCLI_DIR"
