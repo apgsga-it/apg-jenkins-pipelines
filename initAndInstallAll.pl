@@ -38,6 +38,10 @@ if  (!-e $installDir) {
     system $chown
 }
 system "./initLocalRepos.sh -u $user -i $installDir";
+system "./initLocalRepos.sh -u $user -i $installDir";
+system "./installJenkinsFilerunner.sh -i $installDir";
+system "./installApscli.sh -i $installDir";
+system "./runJenkinsPipeline.sh -i $installDir -a";
 
 sub  trim { my $s = shift; $s =~ s/^\s+|\s+$//g; return $s };
 
