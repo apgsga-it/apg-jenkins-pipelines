@@ -4,8 +4,6 @@
 require "rubygems"
 require "bunny"
 
-STDOUT.sync = true
-
 puts "Starting script"
 conn = Bunny.new(:host => "lxewi163.apgsga.ch", :user => "admin", :pass => "test")
 conn.start
@@ -23,9 +21,3 @@ queue.subscribe(manual_ack: true, block: true) do |delivery_info, _, payload|
 end
 puts "Received #{recievedMsg}"
 conn.close
-
-# # keeps the main thread alive
-# while recievedPayLoad == nil do
-#   puts "Looping "
-#   sleep 2
-# end
