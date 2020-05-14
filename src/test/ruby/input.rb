@@ -4,6 +4,7 @@
 require "rubygems"
 require "bunny"
 
+STDOUT.sync = true
 puts "Starting script"
 conn = Bunny.new(:host => "lxewi163.apgsga.ch", :user => "admin", :pass => "test")
 conn.start
