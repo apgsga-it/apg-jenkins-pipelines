@@ -1,6 +1,6 @@
 #!groovy
-
+// Invoking external Ruby Script , which waits blocking for subscription
 node {
-    shOutput = sh(returnStdout: true, script: "$SCRIPTS_DIR/input.rb").trim()
-    echo "Input Script output: $shOutput"
+    recievedMsg = sh(returnStdout: true, script: "$SCRIPTS_DIR/input.rb").trim()
+    echo "Input Script output: $recievedMsg"
 }
