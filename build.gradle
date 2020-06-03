@@ -70,8 +70,15 @@ task runTestLibHelloWorld(type: JenkinsRunnerExec) {
 task runTestAcceptPipeline(type: JenkinsRunnerExec) {
     pipelineFile = "src/test/groovy/testAcceptPipeline.groovy"
     environment = [CASC_JENKINS_CONFIG:"${project.projectDir}/src/test/resources/testlibs.yaml"]
-    description = "Runs Pipeline in ${pipelineFile} , which loads the Pipeline libarary from https://github.com/chhex/jenkins-pipeline-testlib.git  "
+    description = "Runs Pipeline in ${pipelineFile} , which waits a Pipeline Input Statement "
 }
+
+task runTestBunnyAcceptPipeline(type: JenkinsRunnerExec) {
+    pipelineFile = "src/test/groovy/testBunnyAcceptPipeline.groovy"
+    environment.put("SCRIPTS_DIR","${project.projectDir}/src/test/ruby")
+    description = "Runs Pipeline in ${pipelineFile} , which runs a ruby script waiting for a Amqp Message via sh and recieves output"
+}
+
 
 task runBuildPipeline(type: JenkinsRunnerExec) {
     pipelineFile = "src/main/groovy/patchProdBuildPipeline.groovy"

@@ -7,8 +7,8 @@ jenkins:
 unclassified:
   globalLibraries:
     libraries:
-      - defaultVersion: "0.1"
-        name: "patch-global-functions"
+      - defaultVersion: "master"
+        name: "patch-functions"
         implicit: true
         retriever:
           legacySCM:
