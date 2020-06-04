@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
 
-require "rubygems"
 require "bunny"
 
 STDOUT.sync = true
@@ -19,9 +18,3 @@ queue.subscribe(manual_ack: true, block: true) do |delivery_info, _, payload|
 end
 puts "Received #{recievedMsg}"
 conn.close
-
-# # keeps the main thread alive
-# while recievedPayLoad == nil do
-#   puts "Looping "
-#   sleep 2
-# end

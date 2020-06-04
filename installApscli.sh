@@ -44,7 +44,7 @@ installServlessApsCli() {
   cd "$INSTALL_DIR"
   rm -f "/tmp/$ARTIFACTID*"
   export MAVEN_OPTS=-Dmaven.repo.local="$MAVENBASEDIR/repo"
-  mvn dependency:copy -Dartifact=$GROUPID:$ARTIFACTID:$VERSION:zip -DoutputDirectory=/tmp
+  mvn dependency:copy -Dartifact="$GROUPID":"$ARTIFACTID":"$VERSION":zip -DoutputDirectory=/tmp
   if [ -d "$APSCLI_DIR" ]; then
     echo "Deleting Target pkg directory $APSCLI_DIR"
     rm -Rf "$APSCLI_DIR"
@@ -55,9 +55,10 @@ installServlessApsCli() {
   if [ -d "data" ]; then
     echo "Deleting data  directory"
     rm -Rf data
+    mkdir data
     echo "Done"
   fi
-  mv "$APSCLI_DIR/data" .
+  mv "$APSCLI_DIR/data" "$INSTALL_DIR"
   # Update Property file
   sed -i -e "s&@dataDir@&/$INSTALL_DIR/data&g" "$APSCLI_DIR/conf/application.properties"
   cd "$SAVEDWD" || {
@@ -78,7 +79,6 @@ fi
 #Defaults
 
 INSTALL_DIR="/opt/jenkinstests"
-APSCLI_DIR="$INSTALL_DIR/apscli"
 MAVENBASEDIR="$INSTALL_DIR/maven"
 GROUPID=com.apgsga.patchframework
 ARTIFACTID=apg-patch-service-cmdclient
@@ -129,6 +129,8 @@ while true; do
   esac
 done
 echo "Running $0"
+APSCLI_DIR="$INSTALL_DIR/apscli"
 echo "Running with installdir=$APSCLI_DIR, version:$VERSION and $MAVENBASEDIR "
 preconditions
 installServlessApsCli
+echo "Done installing to $APSCLI_DIR, version:$VERSION and $MAVENBASEDIR "

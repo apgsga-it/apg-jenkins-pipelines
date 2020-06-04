@@ -75,6 +75,12 @@ initGradle() {
   fi
   mkdir -p "$INSTALL_DIR/gradle/home"
   git clone "$USER@$REPO_GRADLEHOMEDIR" "$GRADLEHOMEDIR"
+  sed -i '' '/apg.common.repo.maven.file.path=/d' "$GRADLEHOMEDIR"/gradle.properties
+  git clone "$USER@$REPO_GRADLEHOMEDIR" "$GRADLEHOMEDIR"
+  sed -i '' '/apg.common.repo.maven.file.path=/d' "$GRADLEHOMEDIR"/gradle.properties
+  echo "apg.common.repo.maven.file.path=$MAVEN_BASE_DIR/settings.xml" >>"$GRADLEHOMEDIR"/gradle.properties
+  sed -i '' '/apg.common.repo.gradle.maven.active.profile==/d' "$GRADLEHOMEDIR"/gradle.properties
+  echo "apg.common.repo.gradle.maven.active.profile=artifactory" >>"$GRADLEHOMEDIR"/gradle.properties
   export GRADLE_USER_HOME=$GRADLEHOMEDIR
   ./gradlew --version -Dgradle.user.home="$GRADLEHOMEDIR"
   ./gradlew tasks --group="Apg Gradle Jenkinsrunner" -Dgradle.user.home="$GRADLEHOMEDIR"
@@ -132,7 +138,7 @@ while true; do
     MAVEN=n
     shift
     ;;
- -g | --nogradle)
+  -g | --nogradle)
     GRADLE=n
     shift
     ;;

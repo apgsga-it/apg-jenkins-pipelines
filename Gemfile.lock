@@ -1,0 +1,17 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    amq-protocol (2.3.1)
+    bunny (2.15.0)
+      amq-protocol (~> 2.3, >= 2.3.1)
+    slop (4.8.1)
+
+PLATFORMS
+  java
+
+DEPENDENCIES
+  bunny
+  slop
+
+BUNDLED WITH
+   2.1.4

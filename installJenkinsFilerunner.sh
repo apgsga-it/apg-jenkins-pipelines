@@ -53,7 +53,7 @@ preconditions() {
 buildAndInstallJenkinsRunner() {
   SAVEDWD=$(pwd)
   echo "$SAVEDWD"
-  if [ -d "$RUNNER_DIR" ] ]; then
+  if [ -d "$RUNNER_DIR"  ]; then
     echo "$RUNNER_DIR will be deleted recursively "
     rm -Rf "$RUNNER_DIR"
   fi
