@@ -76,7 +76,7 @@ task runTestAcceptPipeline(type: JenkinsRunnerExec) {
 task runTestBunnyAcceptPipeline(type: JenkinsRunnerExec) {
     pipelineFile = "src/test/groovy/testBunnyAcceptPipeline.groovy"
     environment.put("SCRIPTS_DIR","${project.projectDir}/src/test/ruby")
-    description = "Runs Pipeline in ${pipelineFile} , which run a ruby script waiting for a Amqp Message"
+    description = "Runs Pipeline in ${pipelineFile} , which runs a ruby script waiting for a Amqp Message via sh and recieves output"
 }
 
 
