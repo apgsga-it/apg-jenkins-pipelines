@@ -14,7 +14,7 @@ copied to INSTALLDIR
     -d=BUILDDIR target of the git clone of the git repo , defaults to ~/git/jenkinsfile-runner
     -r=GITREPO  git repo, from which the jenkinsfile runner will be cloned, defaults to https://github.com/apgsga-it/jenkinsfile-runner.git
     -b=BRANCH   git of the git repo, defaults to master
-    -i=INSTALLDIR Installation Dir for the Jenkinstests, defaults to ~/jenkinstests
+    -i=INSTALLDIR Installation Dir for the Jenkinstests, defaults to /opt/jenkinstests
     -n          do not delete and clone the BUILDDIR, if it exists
     -s          skip maven package of jenkinsfile-runner
     -x          no MAVENBASEDIR
@@ -122,9 +122,9 @@ fi
 #Defaults
 TARGET_DIR=~/git/jenkinsfile-runner
 # TODO (che, jhe, .4) : Master broken
-#REPO=https://github.com/jenkinsci/jenkinsfile-runner.git
+REPO=https://github.com/jenkinsci/jenkinsfile-runner.git
 # Temp fix in Apg fork
-REPO=https://github.com/apgsga-it/jenkinsfile-runner.git
+#REPO=https://github.com/apgsga-it/jenkinsfile-runner.git
 BRANCH=master
 INSTALL_DIR="/opt/jenkinstests"
 MAVEN_BASE_DIR="$INSTALL_DIR/maven"
