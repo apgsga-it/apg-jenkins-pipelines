@@ -1,5 +1,5 @@
 import hudson.model.*
-#! Work in progress not ready for testing
+#! WORK IN PROGRESS NOT READY FOR TESTING
 def patchName = "Patch${patchnumber}"
 def jobName = patchName
 def downLoadJobName = jobName + "OnDemand"
@@ -9,7 +9,7 @@ pipelineJob (jobName) {
 	concurrentBuild(false)
 	definition {
 		cps {
-			script(readFileFromWorkspace('src/main/jenkins/server/patchProdPipeline.groovy'))
+			script(readFileFromWorkspace('src/main/groovy/patchProdPipeline.groovy'))
 			sandbox(false)
 		}
 	}
@@ -31,7 +31,7 @@ pipelineJob (downLoadJobName) {
 	concurrentBuild(false)
 	definition {
 		cps {
-			script(readFileFromWorkspace('src/main/jenkins/server/patchOnDemandPipeline.groovy'))
+			script(readFileFromWorkspace('src/main/groovy/patchOnDemandPipeline.groovy'))
 			sandbox(false)
 		}
 	}

@@ -1,6 +1,6 @@
 #!groovy
 library 'patch-global-functions'
-#! Work in progress , not ready for testing
+#! WORK IN PROGRESS NOT READY FOR TESTING
 properties([
 	parameters([
 		stringParam(
