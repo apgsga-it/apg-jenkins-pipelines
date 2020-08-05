@@ -3,11 +3,6 @@ plugins {
     id "nu.studer.credentials" version "2.1"
 }
 
-project.ext {
-    runnerInstallationDir = project.hasProperty('installDir') ? project.property('installDir') : "/opt/jenkinstests/runner"
-    mavenSettingsFile = project.hasProperty('mavenSettings') ? project.property('mavenSettings') : '$USER_HOME/.m2/settings.xml'
-
-}
 
 repositories {
     maven {
@@ -28,61 +23,3 @@ dependencies {
 }
 
 
-class JenkinsRunnerExec extends JavaExec {
-    public static final String APG_TASK_GROUP = "Apg Gradle Jenkinsrunner"
-    @Input
-    public def pipelineFile
-
-    @Input def appArgs = []
-
-    @Input def jenkinsWorkspaceDirPath = "${project.projectDir.absolutePath}/jenkinsWorkspace"
-
-    JenkinsRunnerExec() {
-        group = APG_TASK_GROUP
-    }
-
-    @Override
-    void exec() {
-        args = [
-                "${project.ext.runnerInstallationDir}/bin/jenkinsfile-runner-standalone.jar",
-                "-w",
-                "${project.ext.runnerInstallationDir}/jenkins/war/jenkins.war",
-                "-p",
-                "${project.ext.runnerInstallationDir}/jenkins/plugins",
-                "--runWorkspace", "${jenkinsWorkspaceDirPath}",
-                "-f","${project.projectDir}/${pipelineFile}"
-        ] + appArgs
-        logging.captureStandardOutput LogLevel.INFO
-        logging.captureStandardError LogLevel.ERROR
-        main = "-jar"
-        super.exec()
-    }
-
-}
-
-task runTestLibHelloWorld(type: JenkinsRunnerExec) {
-    pipelineFile = "src/test/groovy/testHelloWorldPipeline.groovy"
-    environment = [CASC_JENKINS_CONFIG:"${project.projectDir}/src/test/resources/testlibs.yaml"]
-    description = "Runs Pipeline in ${pipelineFile} , which loads the Pipeline libarary from https://github.com/chhex/jenkins-pipeline-testlib.git  "
-}
-
-
-task runTestAcceptPipeline(type: JenkinsRunnerExec) {
-    pipelineFile = "src/test/groovy/testAcceptPipeline.groovy"
-    environment = [CASC_JENKINS_CONFIG:"${project.projectDir}/src/test/resources/testlibs.yaml"]
-    description = "Runs Pipeline in ${pipelineFile} , which waits a Pipeline Input Statement "
-}
-
-task runTestBunnyAcceptPipeline(type: JenkinsRunnerExec) {
-    pipelineFile = "src/test/groovy/testBunnyAcceptPipeline.groovy"
-    environment.put("SCRIPTS_DIR","${project.projectDir}/src/test/ruby")
-    description = "Runs Pipeline in ${pipelineFile} , which runs a ruby script waiting for a Amqp Message via sh and recieves output"
-}
-
-
-task runBuildPipeline(type: JenkinsRunnerExec) {
-    pipelineFile = "src/main/groovy/patchProdBuildPipeline.groovy"
-    environment = [CASC_JENKINS_CONFIG:"${project.projectDir}/src/main/resources/jenkins/jenkins.yaml"]
-    description = "Runs Pipeline in ${pipelineFile} "
-    appArgs = ["-a", "PARAMETER=${project.projectDir}/src/test/resources/Patch5401.json"]
-}
