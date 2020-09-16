@@ -1,5 +1,4 @@
 import hudson.model.*
-#! WORK IN PROGRESS NOT READY FOR TESTING
 def patchName = "Patch${patchnumber}"
 def jobName = patchName
 def downLoadJobName = jobName + "OnDemand"
@@ -20,10 +19,6 @@ pipelineJob (jobName) {
 		stringParam('RESTART', "FALSE", "Indikator ob die Pipeline gerestart werden soll, bis zum letzten erfolgreichen Ststus default FALSE")
 	}
 	properties {
-		jobInclusionJobProperty {
-			useJobGroup(true)
-			jobGroupName('ProdPatch')
-		}
 	}
 }
 pipelineJob (downLoadJobName) {
@@ -41,9 +36,5 @@ pipelineJob (downLoadJobName) {
 		stringParam('PARAMETER', "", "String mit dem die PatchConfig Parameter als JSON transportiert werden")
 	}
 	properties {
-		jobInclusionJobProperty {
-			useJobGroup(true)
-			jobGroupName('OnDemandPatch')
-		}
 	}
 }
