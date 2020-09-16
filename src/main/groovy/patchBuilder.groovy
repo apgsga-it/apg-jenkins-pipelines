@@ -2,7 +2,7 @@ import hudson.model.*
 def patchName = "Patch${patchnumber}"
 def jobName = patchName
 def downLoadJobName = jobName + "OnDemand"
-
+// Test Permissive Script Approval
 pipelineJob (jobName) {
 	authenticationToken(patchName)
 	concurrentBuild(false)
