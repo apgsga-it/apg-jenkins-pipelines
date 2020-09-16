@@ -8,7 +8,7 @@ pipelineJob (jobName) {
 	definition {
 		cps {
 			script(readFileFromWorkspace('src/main/groovy/patchProdBuildPipeline.groovy'))
-			sandbox(false)
+			sandbox(true)
 		}
 	}
 	logRotator(3653,10,3653,-1) // ten years legal retention period
@@ -25,7 +25,7 @@ pipelineJob (downLoadJobName) {
 	definition {
 		cps {
 			script(readFileFromWorkspace('src/main/groovy/patchOnDemandPipeline.groovy'))
-			sandbox(false)
+			sandbox(true)
 		}
 	}
 	logRotator(3653,10,3653,-1) // ten years legal retention period
