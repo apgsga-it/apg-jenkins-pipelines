@@ -1,6 +1,7 @@
 #!groovy
 library 'patch-global-functions'
 #! WORK IN PROGRESS NOT READY FOR TESTING
+#! Test Permissive Script Approval
 properties([
 	parameters([
 		stringParam(
