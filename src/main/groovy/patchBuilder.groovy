@@ -16,7 +16,6 @@ pipelineJob (jobName) {
 	description("Patch Pipeline for : ${patchName}")
 	parameters {
 		stringParam('PARAMETER', "", "Pfad zum Patch*.json File")
-		stringParam('RESTART', "FALSE", "Indikator ob die Pipeline gerestart werden soll, bis zum letzten erfolgreichen Ststus default FALSE")
 	}
 	properties {
 	}
