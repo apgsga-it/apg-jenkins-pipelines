@@ -8,7 +8,7 @@ pipelineJob (jobName) {
 	concurrentBuild(false)
 	definition {
 		cps {
-			script(readFileFromWorkspace('src/main/groovy/patchProdPipeline.groovy'))
+			script(readFileFromWorkspace('src/main/groovy/patchProdBuildPipeline.groovy'))
 			sandbox(false)
 		}
 	}
