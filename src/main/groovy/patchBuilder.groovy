@@ -14,11 +14,12 @@ pipelineJob (jobName) {
 	logRotator(3653,10,3653,-1) // ten years legal retention period
 	description("Patch Pipeline for : ${patchName}")
 	parameters {
-		stringParam('PARAMETER', "", "Pfad zum Patch*.json File")
+		fileParam('patchFile.json','JSON file for the patch corresponding to this Pipeline')
 	}
 	properties {
 	}
 }
+/*
 pipelineJob (downLoadJobName) {
 	authenticationToken(downLoadJobName)
 	concurrentBuild(false)
@@ -36,3 +37,5 @@ pipelineJob (downLoadJobName) {
 	properties {
 	}
 }
+
+ */
