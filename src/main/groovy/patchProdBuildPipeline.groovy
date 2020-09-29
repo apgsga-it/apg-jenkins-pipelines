@@ -3,7 +3,11 @@
 library 'common-patch-functions'
 
 node {
-
+	def file_in_workspace = unstashFileParameter "patchFile.json"
+	fileOperations([fileDeleteOperation(includes: 'PatchFile.json')])
+	fileOperations([fileRenameOperation(source: "${file_in_workspace}",  destination: 'PatchFile.json')])
+	sh "cat PatchFile.json"
+	stash name: "PatchFile" , includes:  'PatchFile.json'
 }
 
 pipeline {
