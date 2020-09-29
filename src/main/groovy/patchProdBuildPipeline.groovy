@@ -1,5 +1,10 @@
 #!groovy
 
+library 'common-patch-functions'
+
+node {
+
+}
 
 pipeline {
 	options {
@@ -13,11 +18,13 @@ pipeline {
 		stage("Entwicklung") {
 			steps {
 				println "This is the entwicklung stage"
+				commonPatchFunctions.printTestMessage("from Entwicklung")
 			}
 		}
 		stage("Informatiktest") {
 			steps {
-				println "This is the entwicklung stage"
+				println "This is the Informatiktest stage"
+				commonPatchFunctions.printTestMessage("from Informatiktest")
 			}
 		}
 	}
