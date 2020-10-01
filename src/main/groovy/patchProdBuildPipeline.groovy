@@ -9,7 +9,7 @@ node {
 	sh "cat PatchFile.json"
 
 
-	def patchConfig = commonPatchFunctions.readPatchJsonFile(PatchFile.json)
+	def patchConfig = commonPatchFunctions.readPatchJsonFile(new File("./PatchFile.json"))
 	def stageMappings = patchConfig.stageMappings
 
 	println "stageMappings = ${stageMappings}"
