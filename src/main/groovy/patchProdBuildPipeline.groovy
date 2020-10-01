@@ -7,13 +7,6 @@ node {
 	fileOperations([fileDeleteOperation(includes: 'PatchFile.json')])
 	fileOperations([fileRenameOperation(source: "${file_in_workspace}",  destination: 'PatchFile.json')])
 	sh "cat PatchFile.json"
-
-
-	def patchConfig = commonPatchFunctions.readPatchJsonFile(new File("./PatchFile.json"))
-	def stageMappings = patchConfig.stageMappings
-
-	println "stageMappings = ${stageMappings}"
-
 	stash name: "PatchFile" , includes:  'PatchFile.json'
 }
 
@@ -28,19 +21,19 @@ pipeline {
 	agent any
 
 	stages {
-		stage("Entwicklung") {
+		stage('Init') {
 			steps {
-				println "This is the entwicklung stage"
 				script {
-					commonPatchFunctions.printTestMessage("from Entwicklung")
-				}
-			}
-		}
-		stage("Informatiktest") {
-			steps {
-				println "This is the Informatiktest stage"
-				script {
-					commonPatchFunctions.printTestMessage("from Informatiktest")
+					//TODO JHE (01.10.2020): Unstash file first
+					def patchConfig = commonPatchFunctions.readPatchJsonFile(new File("${WORKSPACE}/PatchFile.json"))
+					def stageMappings = patchConfig.stageMappings
+
+					stageMappings.each { s ->
+						stage(s) {
+							println "This is the ${s} stage"
+							commonPatchFunctions.printTestMessage("from ${s}")
+						}
+					}
 				}
 			}
 		}
