@@ -21,15 +21,22 @@ pipeline {
 	agent any
 
 	stages {
-		stage('Init') {
+		// JHE (05.10.2020): We need a kind of wrapper stage in order to dynamically look within stageMappings
+		stage('Starting') {
 			steps {
 				script {
 					//TODO JHE (01.10.2020): Unstash file first
 					def patchConfig = commonPatchFunctions.readPatchJsonFile(new File("${WORKSPACE}/PatchFile.json"))
 					def stageMappings = patchConfig.stageMappings
 
+					stage('CO from SVC and Stash') {
+						println patchfunctions.coFromBranchCvs(patchConfig)
+					}
+
+
 					stageMappings.each { s ->
 						stage(s) {
+							println "TODO JHE"
 							println "This is the ${s} stage"
 							commonPatchFunctions.printTestMessage("from ${s}")
 						}
