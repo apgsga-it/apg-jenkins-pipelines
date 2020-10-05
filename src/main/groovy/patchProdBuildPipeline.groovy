@@ -29,16 +29,20 @@ pipeline {
 					def patchConfig = commonPatchFunctions.readPatchJsonFile(new File("${WORKSPACE}/PatchFile.json"))
 					def stageMappings = patchConfig.stageMappings
 
-					stage('CO from SVC') {
-						patchfunctions.coFromBranchCvs(patchConfig)
-					}
+					//TODO JHE (05.10.2020) : Do we need to call saveTarget ??? Not sure, probably the information will be stored differently since we have separated JSON files
+					println "TODO : check if we have to call saveTarget"
 
+					stageMappings.removeElement("Entwicklung")
 
 					stageMappings.each { s ->
-						stage(s) {
-							println "TODO JHE"
-							println "This is the ${s} stage"
-							commonPatchFunctions.printTestMessage("from ${s}")
+
+						stage("Approve ${s} Build") {
+							//TODO JHE (05.10.2020) : Here we need to call approveBuild function
+							println "TODO : approveBuild"
+						}
+
+						stage("Build for ${s}") {
+							patchfunctions.patchBuildsConcurrent(patchConfig)
 						}
 					}
 				}
