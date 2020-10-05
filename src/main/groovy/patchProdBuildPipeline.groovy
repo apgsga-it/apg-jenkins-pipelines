@@ -29,8 +29,8 @@ pipeline {
 					def patchConfig = commonPatchFunctions.readPatchJsonFile(new File("${WORKSPACE}/PatchFile.json"))
 					def stageMappings = patchConfig.stageMappings
 
-					stage('CO from SVC and Stash') {
-						println patchfunctions.coFromBranchCvs(patchConfig)
+					stage('CO from SVC') {
+						patchfunctions.coFromBranchCvs(patchConfig)
 					}
 
 
