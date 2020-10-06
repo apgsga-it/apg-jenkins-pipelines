@@ -1,7 +1,5 @@
 #!groovy
 
-library 'common-patch-functions'
-
 node {
 	def file_in_workspace = unstashFileParameter "patchFile.json"
 	fileOperations([fileDeleteOperation(includes: 'PatchFile.json')])
@@ -9,8 +7,6 @@ node {
 	sh "cat PatchFile.json"
 	stash name: "PatchFile" , includes:  'PatchFile.json'
 }
-
-
 
 pipeline {
 	options {
