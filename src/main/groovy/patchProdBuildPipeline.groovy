@@ -30,6 +30,12 @@ pipeline {
 
 					stageMappings.removeElement("Entwicklung")
 
+					// TODO JHE (06.10.2020) : Remove this !!! only useful while developping
+					stageMappings.removeElement("Anwendertest")
+					stageMappings.removeElement("Produktion")
+
+
+
 					stageMappings.each { s ->
 
 						stage("Approve ${s} Build") {
