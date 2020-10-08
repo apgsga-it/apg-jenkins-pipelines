@@ -31,7 +31,7 @@ pipeline {
 
 		stage(Approve_InformatikTestBuild) {
 			steps {
-				println "TODO : approve"
+				input message: "Ok to Build for ${InformatiktestBuild}?"
 			}
 		}
 
