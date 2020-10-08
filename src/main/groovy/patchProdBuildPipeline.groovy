@@ -16,7 +16,6 @@ def Approve_InformatikTestBuild = "InformatiktestApprove"
 def Anwendertest = "Anwendertest"
 def Produktion = "Produktion"
 def patchConfig = commonPatchFunctions.readPatchJsonFileFromStash("PatchFile")
-def stageMappings = patchConfig.stageMappings
 
 pipeline {
 	options {
@@ -37,6 +36,7 @@ pipeline {
 		stage(InformatiktestBuild) {
 			steps {
 				script {
+					patchConfig.currentTarget = patchConfig.stageMappings.get(InformatiktestBuild)
 					patchfunctions.patchBuildsConcurrent(patchConfig)
 				}
 			}
