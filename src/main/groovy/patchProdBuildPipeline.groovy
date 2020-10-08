@@ -27,6 +27,11 @@ pipeline {
 
 	stages {
 
+		stage("Approve " + Informatiktest) {
+			steps {
+				println "TODO : approve"
+			}
+		}
 
 		stage(Informatiktest) {
 			steps {
