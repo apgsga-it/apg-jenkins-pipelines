@@ -36,7 +36,9 @@ pipeline {
 
 		stage(InformatiktestBuild) {
 			steps {
-				patchfunctions.patchBuildsConcurrent(patchConfig)
+				script {
+					patchfunctions.patchBuildsConcurrent(patchConfig)
+				}
 			}
 		}
 	}
