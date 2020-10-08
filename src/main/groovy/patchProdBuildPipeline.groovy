@@ -13,10 +13,13 @@ node {
 //                  : So important to stick with variableName=variableValue
 def InformatiktestBuild = "Informatiktest"
 def Approve_InformatikTestBuild = "InformatiktestApprove"
+def Notify_InformatiktestBuildDone = "InformatiktestBuildDone"
 def AnwendertestBuild = "Anwendertest"
 def Approve_AnwendertestBuild = "AnwendertestApprove"
+def Notify_AnwendertestBuildDone = "AnwendertestBuildDone"
 def ProduktionBuild = "Produktion"
 def Approve_ProduktionBuild = "ProduktionApprove"
+def Notify_ProduktionBuildDone = "ProduktionBuildDone"
 def patchConfig = commonPatchFunctions.readPatchJsonFileFromStash("PatchFile")
 
 pipeline {
@@ -44,9 +47,17 @@ pipeline {
 			}
 		}
 
+		stage(Notify_InformatiktestBuildDone) {
+			steps {
+				script {
+					println "TODO : Notify DB for ${Notify_InformatiktestBuildDone}"
+				}
+			}
+		}
+
 		stage(Approve_AnwendertestBuild) {
 			steps {
-				println "TODO : approve"
+				input message: "Ok to Build for ${AnwendertestBuild}?"
 			}
 		}
 
@@ -59,9 +70,17 @@ pipeline {
 			}
 		}
 
+		stage(Notify_AnwendertestBuildDone) {
+			steps {
+				script {
+					println "TODO : Notify DB for ${Notify_AnwendertestBuildDone}"
+				}
+			}
+		}
+
 		stage(Approve_ProduktionBuild) {
 			steps {
-				println "TODO : approve"
+				input message: "Ok to Build for ${ProduktionBuild}?"
 			}
 		}
 
@@ -70,6 +89,14 @@ pipeline {
 				script {
 					patchConfig.currentTarget = patchConfig.stageMappings.get(ProduktionBuild)
 					patchfunctions.patchBuildsConcurrent(patchConfig)
+				}
+			}
+		}
+
+		stage(Notify_ProduktionBuildDone) {
+			steps {
+				script {
+					println "TODO : Notify DB for ${Notify_ProduktionBuildDone}"
 				}
 			}
 		}
