@@ -9,9 +9,11 @@ node {
 
 }
 
-def informatiktestStage = "Informatiktest"
-def anwendertestStage = "Anwendertest"
-def produktionStage = "Produktion"
+// JHE (08.10.2020) : Stage names in declarativ pipeline .... https://issues.jenkins-ci.org/browse/JENKINS-43820
+//                  : So important to stick with variableName=variableValue
+def Informatiktest = "Informatiktest"
+def Anwendertest = "Anwendertest"
+def Produktion = "Produktion"
 def patchConfig = commonPatchFunctions.readPatchJsonFileFromStash("PatchFile")
 def stageMappings = patchConfig.stageMappings
 
@@ -24,9 +26,11 @@ pipeline {
 	agent any
 
 	stages {
-		stage("${informatiktestStage}") {
+
+
+		stage(Informatiktest) {
 			steps {
-				println "starting "
+				println "starting ${Informatiktest} stage"
 				println "Stage mapping are : ${stageMappings}"
 				/*
 				stage("Approve ${s} Build") {
