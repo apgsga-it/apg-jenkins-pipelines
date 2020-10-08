@@ -13,8 +13,10 @@ node {
 //                  : So important to stick with variableName=variableValue
 def InformatiktestBuild = "Informatiktest"
 def Approve_InformatikTestBuild = "InformatiktestApprove"
-def Anwendertest = "Anwendertest"
-def Produktion = "Produktion"
+def AnwendertestBuild = "Anwendertest"
+def Approve_AnwendertestBuild = "AnwendertestApprove"
+def ProduktionBuild = "Produktion"
+def Approve_ProduktionBuild = "ProduktionApprove"
 def patchConfig = commonPatchFunctions.readPatchJsonFileFromStash("PatchFile")
 
 pipeline {
@@ -37,6 +39,36 @@ pipeline {
 			steps {
 				script {
 					patchConfig.currentTarget = patchConfig.stageMappings.get(InformatiktestBuild)
+					patchfunctions.patchBuildsConcurrent(patchConfig)
+				}
+			}
+		}
+
+		stage(Approve_AnwendertestBuild) {
+			steps {
+				println "TODO : approve"
+			}
+		}
+
+		stage(AnwendertestBuild) {
+			steps {
+				script {
+					patchConfig.currentTarget = patchConfig.stageMappings.get(AnwendertestBuild)
+					patchfunctions.patchBuildsConcurrent(patchConfig)
+				}
+			}
+		}
+
+		stage(Approve_ProduktionBuild) {
+			steps {
+				println "TODO : approve"
+			}
+		}
+
+		stage(ProduktionBuild) {
+			steps {
+				script {
+					patchConfig.currentTarget = patchConfig.stageMappings.get(ProduktionBuild)
 					patchfunctions.patchBuildsConcurrent(patchConfig)
 				}
 			}
