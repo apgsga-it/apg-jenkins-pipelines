@@ -24,7 +24,7 @@ pipeline {
 	agent any
 
 	stages {
-		stage(informatiktestStage) {
+		stage("${informatiktestStage}") {
 			steps {
 				println "starting "
 				println "Stage mapping are : ${stageMappings}"
