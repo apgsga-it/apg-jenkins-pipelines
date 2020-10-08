@@ -11,8 +11,8 @@ node {
 
 // JHE (08.10.2020) : Stage names in declarativ pipeline .... https://issues.jenkins-ci.org/browse/JENKINS-43820
 //                  : So important to stick with variableName=variableValue
-def Informatiktest_Build = "Informatiktest"
-def Approve_InformatikTest_Build = "InformatiktestApprove"
+def InformatiktestBuild = "Informatiktest"
+def Approve_InformatikTestBuild = "InformatiktestApprove"
 def Anwendertest = "Anwendertest"
 def Produktion = "Produktion"
 def patchConfig = commonPatchFunctions.readPatchJsonFileFromStash("PatchFile")
@@ -28,29 +28,16 @@ pipeline {
 
 	stages {
 
-		stage(Approve_InformatikTest_Build) {
+		stage(Approve_InformatikTestBuild) {
 			steps {
 				println "TODO : approve"
 			}
 		}
 
-		stage(Informatiktest_Build) {
+		stage(InformatiktestBuild) {
 			steps {
-				println "starting ${Informatiktest} stage"
-				println "Stage mapping are : ${stageMappings}"
-				/*
-				stage("Approve ${s} Build") {
-					//TODO JHE (05.10.2020) : Here we need to call approveBuild function
-					println "TODO : approveBuild"
-				}
-
-				stage("Build for ${s}") {
-					patchfunctions.patchBuildsConcurrent(patchConfig)
-				}
-
-				 */
+				patchfunctions.patchBuildsConcurrent(patchConfig)
 			}
 		}
 	}
 }
-
