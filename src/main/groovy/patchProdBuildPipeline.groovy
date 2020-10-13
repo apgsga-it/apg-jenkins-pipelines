@@ -32,6 +32,15 @@ pipeline {
 
 	stages {
 
+		// TODO JHE (09.10.2020): To be verified with UGE, but I believe we don't have to wait for any approval here, we can just prepare the ZIPs
+		stage("BuildDbZip") {
+			steps {
+				script {
+					patchfunctions.patchBuildDbZip(patchConfig)
+				}
+			}
+		}
+
 		stage(Approve_InformatikTestBuild) {
 			steps {
 				input message: "Ok to Build for ${InformatiktestBuild}?"
