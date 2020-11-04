@@ -50,7 +50,7 @@ pipeline {
 		stage(InformatiktestBuild) {
 			steps {
 				script {
-					patchConfig.currentTarget = patchConfig.stageMappings.get(InformatiktestBuild)
+					patchConfig.currentTarget = patchConfig.stagesMapping.get(InformatiktestBuild)
 					patchfunctions.patchBuildsConcurrent(patchConfig)
 				}
 			}
