@@ -43,7 +43,7 @@ pipeline {
 
 		stage(Approve_InformatikTestBuild) {
 			steps {
-				input message: "Ok to Build for ${InformatiktestBuild}?"
+				input message: "Ok to Build for ${InformatiktestBuild}?", id: "Oktocontinue"
 			}
 		}
 
