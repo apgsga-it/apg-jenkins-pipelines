@@ -43,7 +43,7 @@ pipeline {
 
 		stage(Approve_InformatikTestBuild) {
 			steps {
-				input message: "Ok to Build for ${InformatiktestBuild}?", id: "Oktocontinue"
+				input message: "Ok to Build for ${InformatiktestBuild}?", id: "Patch${patchConfig.patchNummer}BuildFor${patchConfig.currentTarget}Ok"
 			}
 		}
 
