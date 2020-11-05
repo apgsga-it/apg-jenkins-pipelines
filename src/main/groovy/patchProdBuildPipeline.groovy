@@ -43,9 +43,11 @@ pipeline {
 
 		stage(Approve_InformatikTestBuild) {
 			steps {
-				patchConfig.currentTarget = commonPatchFunctions.getTargetFor(patchConfig,InformatiktestBuild)
-				commonPatchFunctions.savePatchConfigState(patchConfig)
-				input message: "Ok to Build for ${InformatiktestBuild}?", id: "Patch${patchConfig.patchNummer}BuildFor${patchConfig.currentTarget}Ok"
+				script {
+					patchConfig.currentTarget = commonPatchFunctions.getTargetFor(patchConfig, InformatiktestBuild)
+					commonPatchFunctions.savePatchConfigState(patchConfig)
+					input message: "Ok to Build for ${InformatiktestBuild}?", id: "Patch${patchConfig.patchNummer}BuildFor${patchConfig.currentTarget}Ok"
+				}
 			}
 		}
 
