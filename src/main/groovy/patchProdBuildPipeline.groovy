@@ -50,7 +50,8 @@ pipeline {
 		stage(InformatiktestBuild) {
 			steps {
 				script {
-					patchConfig.currentTarget = patchConfig.stagesMapping.get(InformatiktestBuild)
+					patchConfig.currentTarget = commonPatchFunctions.getTargetFor(patchConfig,InformatiktestBuild)
+					println "patchConfig.currentTarget has been set with ${patchConfig.currentTarget}. Build will now start..."
 					patchfunctions.patchBuildsConcurrent(patchConfig)
 				}
 			}
