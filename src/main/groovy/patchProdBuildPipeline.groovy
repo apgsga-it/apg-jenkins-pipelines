@@ -51,6 +51,7 @@ pipeline {
 			steps {
 				script {
 					patchConfig.currentTarget = commonPatchFunctions.getTargetFor(patchConfig,InformatiktestBuild)
+					commonPatchFunctions.savePatchConfigState(patchConfig)
 					println "patchConfig.currentTarget has been set with ${patchConfig.currentTarget}. Build will now start..."
 					patchfunctions.patchBuildsConcurrent(patchConfig)
 				}
