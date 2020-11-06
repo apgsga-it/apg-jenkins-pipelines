@@ -56,6 +56,9 @@ pipeline {
 			steps {
 				script {
 					patchfunctions.patchBuildsConcurrent(patchConfig)
+					patchConfig.targetToState = commonPatchFunctions.getStatusCodeFor(patchConfig,InformatiktestBuild)
+					commonPatchFunctions.savePatchConfigState(patchConfig)
+					println "patchConfig.targetToState has been set with ${patchConfig.targetToState}"
 				}
 			}
 		}
@@ -63,7 +66,7 @@ pipeline {
 		stage(Notify_InformatiktestBuildDone) {
 			steps {
 				script {
-					println "TODO : Notify DB for ${Notify_InformatiktestBuildDone}"
+					commonPatchFunctions.notifyDb(patchConfig)
 				}
 			}
 		}
