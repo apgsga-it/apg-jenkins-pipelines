@@ -56,7 +56,7 @@ pipeline {
 			steps {
 				script {
 					patchfunctions.patchBuildsConcurrent(patchConfig)
-					patchConfig.targetToState = commonPatchFunctions.getStatusCodeFor(patchConfig,InformatiktestBuild)
+					patchConfig.targetToState = commonPatchFunctions.getStatusCodeFor(patchConfig,InformatiktestBuild,"BuildFor")
 					commonPatchFunctions.savePatchConfigState(patchConfig)
 					println "patchConfig.targetToState has been set with ${patchConfig.targetToState}"
 				}
