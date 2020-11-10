@@ -2,10 +2,10 @@ import hudson.model.*
 def patchName = "Patch${patchnumber}"
 def jobName = patchName
 def downLoadJobName = jobName + "OnDemand"
-def stageAsCSV = stages.split(",")
+def stageList = stages.split(",")
 
-stageAsCSV.each {stage ->
-	pipelineJob(jobName + stage) {
+stageList.each {stage ->
+	pipelineJob(jobName + "_build_" + stage) {
 		authenticationToken(patchName)
 		concurrentBuild(false)
 		definition {
