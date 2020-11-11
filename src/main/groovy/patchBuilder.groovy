@@ -24,24 +24,6 @@ stageList.each {stage ->
 	}
 }
 
-pipelineJob(jobName + "_build_db") {
-	authenticationToken(patchName)
-	concurrentBuild(false)
-	definition {
-		cps {
-			script(readFileFromWorkspace('src/main/groovy/patchDbBuildPipeline.groovy'))
-			sandbox(true)
-		}
-	}
-	logRotator(3653, 10, 3653, -1) // ten years legal retention period
-	description("Patch DB Pipeline for : ${patchName}")
-	parameters {
-		fileParam('patchFile.json', 'JSON file for the patch corresponding to this Pipeline')
-	}
-	properties {
-	}
-}
-
 /*
 pipelineJob (downLoadJobName) {
 	authenticationToken(downLoadJobName)
