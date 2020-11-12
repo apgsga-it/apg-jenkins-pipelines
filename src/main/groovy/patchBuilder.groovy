@@ -18,7 +18,7 @@ stageList.each {stage ->
 		description("Patch Pipeline for : ${patchName}")
 		parameters {
 			fileParam('patchFile.json', 'JSON file for the patch corresponding to this Pipeline')
-			stringParam('TARGET')
+			stringParam('TARGET', "", "Target for which Patch will be build")
 		}
 		properties {
 		}
