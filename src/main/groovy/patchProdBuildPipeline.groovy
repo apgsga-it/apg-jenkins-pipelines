@@ -26,15 +26,6 @@ pipeline {
 
 	stages {
 
-		stage("to be removed") {
-			steps {
-				script {
-					println "Target is : ${params.TARGET}"
-				}
-			}
-		}
-
-		/*
 		stage("BuildDbZip") {
 			steps {
 				script {
@@ -46,12 +37,12 @@ pipeline {
 		stage("Build Java Artifact") {
 			steps {
 				script {
-					patchConfig.currentTarget = commonPatchFunctions.getTargetFor(patchConfig, InformatiktestBuild)
-					commonPatchFunctions.savePatchConfigState(patchConfig)
+					patchConfig.currentTarget = params.TARGET
+					//commonPatchFunctions.savePatchConfigState(patchConfig)
 					println "patchConfig.currentTarget has been set with ${patchConfig.currentTarget}"
 					patchfunctions.patchBuildsConcurrent(patchConfig)
 					patchConfig.targetToState = commonPatchFunctions.getStatusCodeFor(patchConfig,InformatiktestBuild,"BuildFor")
-					commonPatchFunctions.savePatchConfigState(patchConfig)
+					//commonPatchFunctions.savePatchConfigState(patchConfig)
 					println "patchConfig.targetToState has been set with ${patchConfig.targetToState}"
 				}
 			}
@@ -64,6 +55,5 @@ pipeline {
 				}
 			}
 		}
-		*/
 	}
 }
