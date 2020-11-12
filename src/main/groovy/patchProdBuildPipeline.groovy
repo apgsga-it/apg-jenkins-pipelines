@@ -9,7 +9,6 @@ node {
 
 }
 
-def InformatiktestBuild = "Informatiktest"
 def patchConfig = commonPatchFunctions.readPatchJsonFileFromStash("PatchFile")
 
 pipeline {
@@ -20,6 +19,7 @@ pipeline {
 
 	parameters {
 		string(name: 'TARGET')
+		string(name: 'STAGE')
 	}
 
 	agent any
@@ -41,7 +41,7 @@ pipeline {
 					//commonPatchFunctions.savePatchConfigState(patchConfig)
 					println "patchConfig.currentTarget has been set with ${patchConfig.currentTarget}"
 					patchfunctions.patchBuildsConcurrent(patchConfig)
-					patchConfig.targetToState = commonPatchFunctions.getStatusCodeFor(patchConfig,InformatiktestBuild,"BuildFor")
+					patchConfig.targetToState = commonPatchFunctions.getStatusCodeFor(patchConfig,params.STAGE,"BuildFor")
 					//commonPatchFunctions.savePatchConfigState(patchConfig)
 					println "patchConfig.targetToState has been set with ${patchConfig.targetToState}"
 				}
