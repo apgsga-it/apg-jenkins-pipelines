@@ -25,7 +25,6 @@ pipeline {
 	agent any
 
 	stages {
-
 		stage("Build") {
 			steps {
 				parallel(
@@ -41,35 +40,7 @@ pipeline {
 						}
 				)
 			}
-
-/*
-			steps {
-				script {
-					patchfunctions.patchBuildDbZip(patchConfig,params.TARGET)
-				}
-			}
-
- */
 		}
-
-
-		/*
-		stage("Build Java Artifact") {
-			steps {
-				script {
-					//patchConfig.currentTarget = params.TARGET
-					//commonPatchFunctions.savePatchConfigState(patchConfig)
-					//println "patchConfig.currentTarget has been set with ${patchConfig.currentTarget}"
-					patchfunctions.patchBuildsConcurrent(patchConfig,params.TARGET)
-					//patchConfig.targetToState = commonPatchFunctions.getStatusCodeFor(patchConfig,params.STAGE,"BuildFor")
-					//commonPatchFunctions.savePatchConfigState(patchConfig)
-					//println "patchConfig.targetToState has been set with ${patchConfig.targetToState}"
-				}
-			}
-		}
-
-		 */
-
 		stage("Notify DB") {
 			steps {
 				script {
