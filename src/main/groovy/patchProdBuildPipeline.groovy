@@ -29,7 +29,7 @@ pipeline {
 		stage("BuildDbZip") {
 			steps {
 				script {
-					patchfunctions.patchBuildDbZip(patchConfig)
+					patchfunctions.patchBuildDbZip(patchConfig,params.TARGET)
 				}
 			}
 		}
