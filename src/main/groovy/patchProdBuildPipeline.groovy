@@ -30,10 +30,14 @@ pipeline {
 			steps {
 				parallel(
 						"db-build": {
-							patchfunctions.patchBuildDbZip(patchConfig,params.TARGET)
+							script {
+								patchfunctions.patchBuildDbZip(patchConfig, params.TARGET)
+							}
 						},
 						"java-build": {
-							patchfunctions.patchBuildsConcurrent(patchConfig,params.TARGET)
+							script {
+								patchfunctions.patchBuildsConcurrent(patchConfig, params.TARGET)
+							}
 						}
 				)
 			}
