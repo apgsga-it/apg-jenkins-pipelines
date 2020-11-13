@@ -37,13 +37,13 @@ pipeline {
 		stage("Build Java Artifact") {
 			steps {
 				script {
-					patchConfig.currentTarget = params.TARGET
+					//patchConfig.currentTarget = params.TARGET
 					//commonPatchFunctions.savePatchConfigState(patchConfig)
-					println "patchConfig.currentTarget has been set with ${patchConfig.currentTarget}"
-					patchfunctions.patchBuildsConcurrent(patchConfig)
-					patchConfig.targetToState = commonPatchFunctions.getStatusCodeFor(patchConfig,params.STAGE,"BuildFor")
+					//println "patchConfig.currentTarget has been set with ${patchConfig.currentTarget}"
+					patchfunctions.patchBuildsConcurrent(patchConfig,params.TARGET)
+					//patchConfig.targetToState = commonPatchFunctions.getStatusCodeFor(patchConfig,params.STAGE,"BuildFor")
 					//commonPatchFunctions.savePatchConfigState(patchConfig)
-					println "patchConfig.targetToState has been set with ${patchConfig.targetToState}"
+					//println "patchConfig.targetToState has been set with ${patchConfig.targetToState}"
 				}
 			}
 		}
@@ -51,7 +51,8 @@ pipeline {
 		stage("Notify DB Build is done") {
 			steps {
 				script {
-					commonPatchFunctions.notifyDb(patchConfig)
+					def targetToState = commonPatchFunctions.getStatusCodeFor(patchConfig,params.STAGE,"BuildFor")
+					commonPatchFunctions.notifyDb(patchConfig,targetToState)
 				}
 			}
 		}
