@@ -26,14 +26,30 @@ pipeline {
 
 	stages {
 
-		stage("BuildDbZip") {
+		stage("Build") {
+			steps {
+				parallel(
+						"db-build": {
+							patchfunctions.patchBuildDbZip(patchConfig,params.TARGET)
+						},
+						"java-build": {
+							patchfunctions.patchBuildsConcurrent(patchConfig,params.TARGET)
+						}
+				)
+			}
+
+/*
 			steps {
 				script {
 					patchfunctions.patchBuildDbZip(patchConfig,params.TARGET)
 				}
 			}
+
+ */
 		}
 
+
+		/*
 		stage("Build Java Artifact") {
 			steps {
 				script {
@@ -48,7 +64,9 @@ pipeline {
 			}
 		}
 
-		stage("Notify DB Build is done") {
+		 */
+
+		stage("Notify DB") {
 			steps {
 				script {
 					def targetToState = commonPatchFunctions.getStatusCodeFor(patchConfig,params.STAGE,"BuildFor")
