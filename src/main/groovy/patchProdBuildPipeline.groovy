@@ -27,6 +27,9 @@ pipeline {
 	stages {
 		stage("Build") {
 			steps {
+				script {
+					commonPatchFunctions.logPatchActivity(patchConfig,"Build for ${params.TARGET} started.")
+				}
 				parallel(
 						"db-build": {
 							script {
@@ -39,6 +42,9 @@ pipeline {
 							}
 						}
 				)
+				script {
+					commonPatchFunctions.logPatchActivity(patchConfig,"Build for ${params.TARGET} done.")
+				}
 			}
 		}
 		stage("Notify DB") {
