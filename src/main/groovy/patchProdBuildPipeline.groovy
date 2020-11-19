@@ -20,6 +20,7 @@ pipeline {
 	parameters {
 		string(name: 'TARGET')
 		string(name: 'STAGE')
+		string(name: 'SUCCESS_NOTIFICATION')
 	}
 
 	agent any
