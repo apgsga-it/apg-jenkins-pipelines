@@ -45,8 +45,7 @@ pipeline {
 		stage("Notify DB") {
 			steps {
 				script {
-					def targetToState = commonPatchFunctions.getStatusCodeFor(patchConfig,params.STAGE,"BuildFor")
-					commonPatchFunctions.notifyDb(patchConfig,targetToState)
+					commonPatchFunctions.notifyDb(patchConfig,params.STAGE,params.SUCCESS_NOTIFICATION)
 				}
 			}
 		}
