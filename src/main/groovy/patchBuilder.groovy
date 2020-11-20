@@ -2,23 +2,32 @@ import hudson.model.*
 def patchName = "Patch${patchnumber}"
 def jobName = patchName
 def downLoadJobName = jobName + "OnDemand"
-pipelineJob (jobName) {
-	authenticationToken(patchName)
-	concurrentBuild(false)
-	definition {
-		cps {
-			script(readFileFromWorkspace('src/main/groovy/patchProdBuildPipeline.groovy'))
-			sandbox(true)
+def stageList = stages.split(",")
+
+stageList.each {stage ->
+	pipelineJob(jobName + "_build_" + stage) {
+		authenticationToken(patchName)
+		concurrentBuild(false)
+		definition {
+			cps {
+				script(readFileFromWorkspace('src/main/groovy/patchProdBuildPipeline.groovy'))
+				sandbox(true)
+			}
+		}
+		logRotator(3653, 10, 3653, -1) // ten years legal retention period
+		description("Patch Pipeline for : ${patchName}")
+		parameters {
+			fileParam('patchFile.json', 'JSON file for the patch corresponding to this Pipeline')
+			stringParam('TARGET', "", "Target for which Patch will be build")
+			stringParam('STAGE', stage, "Stage for which Pipeline will be build")
+			stringParam('SUCCESS_NOTIFICATION', "", "Notification sent back to the DB if everything ran fine.")
+		}
+		properties {
 		}
 	}
-	logRotator(3653,10,3653,-1) // ten years legal retention period
-	description("Patch Pipeline for : ${patchName}")
-	parameters {
-		stringParam('PARAMETER', "", "Pfad zum Patch*.json File")
-	}
-	properties {
-	}
 }
+
+/*
 pipelineJob (downLoadJobName) {
 	authenticationToken(downLoadJobName)
 	concurrentBuild(false)
@@ -36,3 +45,5 @@ pipelineJob (downLoadJobName) {
 	properties {
 	}
 }
+
+ */
