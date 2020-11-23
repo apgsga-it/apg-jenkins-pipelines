@@ -21,6 +21,7 @@ pipeline {
 		string(name: 'TARGET')
 		string(name: 'STAGE')
 		string(name: 'SUCCESS_NOTIFICATION')
+		string(name: 'ERROR_NOTIFICATION')
 	}
 
 	agent any
@@ -42,12 +43,22 @@ pipeline {
 				)
 			}
 		}
-		stage("Notify DB") {
+	}
+	post {
+		success {
 			steps {
 				script {
-					commonPatchFunctions.notifyDb(patchConfig,params.STAGE,params.SUCCESS_NOTIFICATION)
+					commonPatchFunctions.notifyDb(patchConfig,params.STAGE,params.SUCCESS_NOTIFICATION,null)
 				}
 			}
 		}
+		unsuccessful {
+			steps {
+				script {
+					commonPatchFunctions.notifyDb(patchConfig,params.STAGE,null,params.ERROR_NOTIFICATION)
+				}
+			}
+		}
+
 	}
 }
