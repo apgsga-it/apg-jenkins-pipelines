@@ -46,18 +46,14 @@ pipeline {
 	}
 	post {
 		success {
-			steps {
 				script {
 					commonPatchFunctions.notifyDb(patchConfig,params.STAGE,params.SUCCESS_NOTIFICATION,null)
 				}
-			}
 		}
 		unsuccessful {
-			steps {
 				script {
 					commonPatchFunctions.notifyDb(patchConfig,params.STAGE,null,params.ERROR_NOTIFICATION)
 				}
-			}
 		}
 
 	}
