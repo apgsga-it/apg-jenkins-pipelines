@@ -21,6 +21,7 @@ stageList.each {stage ->
 			stringParam('TARGET', "", "Target for which Patch will be build")
 			stringParam('STAGE', stage, "Stage for which Pipeline will be build")
 			stringParam('SUCCESS_NOTIFICATION', "", "Notification sent back to the DB if everything ran fine.")
+			stringParam('ERROR_NOTIFICATION', "", "Notification sent back to the DB if a problem occured.")
 		}
 		properties {
 		}
