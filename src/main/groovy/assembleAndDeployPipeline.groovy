@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     parameters {
+        //TODO JHE (09.12.2020) : couldn't we provide the target only as part of the PARAMETER params?
         string(name: 'TARGET')
         string(name: 'PARAMETER', description: 'JSON String containing all required info')
     }
