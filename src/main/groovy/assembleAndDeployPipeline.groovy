@@ -7,7 +7,8 @@ pipeline {
     }
 
     stages {
-        stage("Assemble and Deploy for ${params.TARGET}") {
+        // JHE (09.12.2020): Seems not easily possible to use variable in stage name for declarative pipeline : https://issues.jenkins.io/browse/JENKINS-43820
+        stage("Assemble and Deploy") {
             steps {
                 script {
                     assembleAndDeployPatchFunctions.assembleAndDeploy(params.TARGET, params.PARAMETER)
