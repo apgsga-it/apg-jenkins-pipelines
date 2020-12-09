@@ -16,6 +16,7 @@ pipeline {
         stage("Assemble and Deploy") {
             steps {
                 script {
+                    commonPatchFunctions.log("assembleAndDeploy Job will be started for ${PARAMS.target} with following parameter ${params.PARAMETER}")
                     def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
                     assembleAndDeployPatchFunctions.assembleAndDeploy(params.TARGET, paramsAsJson)
                 }
