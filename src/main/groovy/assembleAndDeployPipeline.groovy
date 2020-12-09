@@ -12,7 +12,8 @@ pipeline {
         stage("Assemble and Deploy") {
             steps {
                 script {
-                    assembleAndDeployPatchFunctions.assembleAndDeploy(params.TARGET, params.PARAMETER)
+                    def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
+                    assembleAndDeployPatchFunctions.assembleAndDeploy(params.TARGET, paramsAsJson)
                 }
             }
         }
