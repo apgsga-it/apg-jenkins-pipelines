@@ -9,7 +9,9 @@ pipeline {
     stages {
         stage("Assemble and Deploy for ${params.TARGET}") {
             steps {
-                assembleAndDeployPatchFunctions.assembleAndDeploy(params.TARGET,params.PARAMETER)
+                script {
+                    assembleAndDeployPatchFunctions.assembleAndDeploy(params.TARGET, params.PARAMETER)
+                }
             }
         }
     }
