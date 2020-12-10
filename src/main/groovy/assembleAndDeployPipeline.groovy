@@ -1,6 +1,6 @@
 #!groovy
 
-import groovy.json.JsonSlurper
+import groovy.json.JsonSlurperClassic
 
 pipeline {
     agent any
@@ -18,11 +18,7 @@ pipeline {
             steps {
                 script {
                     commonPatchFunctions.log("assembleAndDeploy Job will be started for ${params.target} with following parameter ${params.PARAMETER}")
-                    //def paramsAsJson = new JsonSlurper().setType(groovy.json.JsonParserType.LAX).parseText(params.PARAMETER)
-
-                    def paramsAsJson = readJSON text: params.PARAMETER
-                    println "Result of parsing done with readJSON : ${paramsAsJson}"
-
+                    def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
                     assembleAndDeployPatchFunctions.assembleAndDeploy(params.TARGET, paramsAsJson)
                 }
             }
