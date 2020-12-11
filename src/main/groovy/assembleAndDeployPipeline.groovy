@@ -20,7 +20,7 @@ pipeline {
                 lock("revisionFileOperation") {
                     fileOperations([
                             folderCreateOperation(folderPath: "./clonedInformation"),
-                            fileCopyOperation(includes: "${env.GRADLE_USER_HOME_PATH}/Revisions.json", targetLocation: "./clonedInformation")
+                            fileCopyOperation(includes: "${env.GRADLE_USER_HOME_PATH}/Revisions.*", targetLocation: "./clonedInformation")
                     ])
                 }
             }
