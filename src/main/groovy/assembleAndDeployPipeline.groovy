@@ -21,7 +21,7 @@ pipeline {
                     fileOperations([
                             folderCreateOperation(folderPath: "${env.WORKSPACE}/clonedInformation"),
                     ])
-                    dir(${env.GRADLE_USER_HOME_PATH}) {
+                    dir(env.GRADLE_USER_HOME_PATH) {
                         fileOperations([
                                 fileCopyOperation(includes: "Revisions.json", targetLocation: "${env.WORKSPACE}/clonedInformation")
                         ])
