@@ -19,9 +19,14 @@ pipeline {
                 //TODO JHE (11.12.2020) : get the lock name from a parameter, and coordonate it with operations done during build Pipeline
                 lock("revisionFileOperation") {
                     fileOperations([
-                            folderCreateOperation(folderPath: "./clonedInformation"),
-                            fileCopyOperation(includes: "${env.GRADLE_USER_HOME_PATH}/Revisions.*", targetLocation: "./clonedInformation")
+                            folderCreateOperation(folderPath: "${env.WORKSPACE}/clonedInformation"),
                     ])
+                    dir(${env.GRADLE_USER_HOME_PATH}) {
+                        fileOperations([
+                                fileCopyOperation(includes: "Revisions.json", targetLocation: "${env.WORKSPACE}/clonedInformation")
+                        ])
+                    }
+
                 }
             }
         }
