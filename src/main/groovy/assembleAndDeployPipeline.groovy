@@ -32,14 +32,18 @@ pipeline {
             }
         }
 
-        // JHE (09.12.2020): Seems not easily possible to use variable in stage name for declarative pipeline : https://issues.jenkins.io/browse/JENKINS-43820
-        stage("Assemble and Deploy") {
+        //JHE (14.12.2020): This is not really a stage ... but Jenkins won't accept to have step done before parallel tasks (below)
+        stage("Starting logged") {
             steps {
-
                 script {
                     assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "started")
                 }
+            }
+        }
 
+        // JHE (09.12.2020): Seems not easily possible to use variable in stage name for declarative pipeline : https://issues.jenkins.io/browse/JENKINS-43820
+        stage("Assemble and Deploy") {
+            steps {
                 parallel(
                         "db-assemble": {
                             script {
