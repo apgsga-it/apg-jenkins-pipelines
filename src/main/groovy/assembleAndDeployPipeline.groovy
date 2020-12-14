@@ -12,7 +12,9 @@ pipeline {
 
     }
 
-    def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
+    node {
+        def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
+    }
 
     stages {
 
