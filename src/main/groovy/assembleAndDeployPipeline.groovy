@@ -35,17 +35,30 @@ pipeline {
         // JHE (09.12.2020): Seems not easily possible to use variable in stage name for declarative pipeline : https://issues.jenkins.io/browse/JENKINS-43820
         stage("Assemble and Deploy") {
             steps {
+
                 script {
-                    commonPatchFunctions.log("assembleAndDeploy Job will be started for ${params.target} with following parameter ${params.PARAMETER}")
-                    commonPatchFunctions.log("paramAsJson = ${paramsAsJson}")
-                    assembleAndDeployPatchFunctions.assembleAndDeploy(params.TARGET, paramsAsJson)
+                    assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "started")
                 }
+
+                parallel(
+                        "db-assemble": {
+                            script {
+                                assembleAndDeployPatchFunctions.assembleAndDeployDb(params.TARGET, paramsAsJson)
+                            }
+                        },
+                        "java-assemble": {
+                            script {
+                                assembleAndDeployPatchFunctions.assembleAndDeployJavaService(params.TARGET, paramsAsJson)
+                            }
+                        }
+                )
             }
         }
     }
     post {
         success {
             script {
+                assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "done")
                 paramsAsJson.patches.each{patchNumber ->
                     commonPatchFunctions.notifyDb(patchNumber,"assembleAndDeploy",paramsAsJson.successNotification,null)
                 }
