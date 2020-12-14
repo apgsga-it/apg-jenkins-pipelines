@@ -12,11 +12,9 @@ pipeline {
 
     }
 
-    environment {
-        paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
-    }
-
     stages {
+
+        def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
 
         // TODO JHE (14.12.2020): This will probably be done differently, or maybe not necessary as soon as IT-36715 will be done
         stage("Copy Revision file") {
@@ -42,7 +40,7 @@ pipeline {
                 script {
                     commonPatchFunctions.log("assembleAndDeploy Job will be started for ${params.target} with following parameter ${params.PARAMETER}")
                     commonPatchFunctions.log("paramAsJson = ${paramsAsJson}")
-                    assembleAndDeployPatchFunctions.assembleAndDeploy(params.TARGET, env.paramsAsJson)
+                    assembleAndDeployPatchFunctions.assembleAndDeploy(params.TARGET, paramsAsJson)
                 }
             }
         }
@@ -50,14 +48,14 @@ pipeline {
     post {
         success {
             script {
-                env.paramsAsJson.patches.each{patchNumber ->
+                paramsAsJson.patches.each{patchNumber ->
                     commonPatchFunctions.notifyDb(patchNumber,"assembleAndDeploy",params.PARAMETER.successNotification,null)
                 }
             }
         }
         unsuccessful {
             script {
-                env.paramsAsJson.patches.each{patchNumber ->
+                paramsAsJson.patches.each{patchNumber ->
                     commonPatchFunctions.notifyDb(patchNumber,"assembleAndDeploy",null,params.PARAMETER.errorNotification)
                 }
             }
