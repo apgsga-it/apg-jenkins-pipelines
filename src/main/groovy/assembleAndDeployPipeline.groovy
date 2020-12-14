@@ -12,8 +12,8 @@ pipeline {
 
     }
 
-    node {
-        def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
+    environment {
+        paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
     }
 
     stages {
@@ -42,7 +42,7 @@ pipeline {
                 script {
                     commonPatchFunctions.log("assembleAndDeploy Job will be started for ${params.target} with following parameter ${params.PARAMETER}")
                     commonPatchFunctions.log("paramAsJson = ${paramsAsJson}")
-                    assembleAndDeployPatchFunctions.assembleAndDeploy(params.TARGET, paramsAsJson)
+                    assembleAndDeployPatchFunctions.assembleAndDeploy(params.TARGET, env.paramsAsJson)
                 }
             }
         }
@@ -50,14 +50,14 @@ pipeline {
     post {
         success {
             script {
-                paramsAsJson.patches.each{patchNumber ->
+                env.paramsAsJson.patches.each{patchNumber ->
                     commonPatchFunctions.notifyDb(patchNumber,"assembleAndDeploy",params.PARAMETER.successNotification,null)
                 }
             }
         }
         unsuccessful {
             script {
-                paramsAsJson.patches.each{patchNumber ->
+                env.paramsAsJson.patches.each{patchNumber ->
                     commonPatchFunctions.notifyDb(patchNumber,"assembleAndDeploy",null,params.PARAMETER.errorNotification)
                 }
             }
