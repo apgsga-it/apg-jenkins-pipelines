@@ -47,14 +47,14 @@ pipeline {
         success {
             script {
                 paramsAsJson.patches.each{patchNumber ->
-                    commonPatchFunctions.notifyDb(patchNumber,"assembleAndDeploy",params.PARAMETER.successNotification,null)
+                    commonPatchFunctions.notifyDb(patchNumber,"assembleAndDeploy",paramsAsJson.successNotification,null)
                 }
             }
         }
         unsuccessful {
             script {
                 paramsAsJson.patches.each{patchNumber ->
-                    commonPatchFunctions.notifyDb(patchNumber,"assembleAndDeploy",null,params.PARAMETER.errorNotification)
+                    commonPatchFunctions.notifyDb(patchNumber,"assembleAndDeploy",null,paramsAsJson.errorNotification)
                 }
             }
         }
