@@ -12,6 +12,8 @@ pipeline {
 
     }
 
+    def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
+
     stages {
 
         // TODO JHE (14.12.2020): This will probably be done differently, or maybe not necessary as soon as IT-36715 will be done
@@ -37,7 +39,6 @@ pipeline {
             steps {
                 script {
                     commonPatchFunctions.log("assembleAndDeploy Job will be started for ${params.target} with following parameter ${params.PARAMETER}")
-                    def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
                     commonPatchFunctions.log("paramAsJson = ${paramsAsJson}")
                     assembleAndDeployPatchFunctions.assembleAndDeploy(params.TARGET, paramsAsJson)
                 }
@@ -47,14 +48,14 @@ pipeline {
     post {
         success {
             script {
-                def patches = params.PARAMETER.patches.each{patchNumber ->
+                paramsAsJson.patches.each{patchNumber ->
                     commonPatchFunctions.notifyDb(patchNumber,"assembleAndDeploy",params.PARAMETER.successNotification,null)
                 }
             }
         }
         unsuccessful {
             script {
-                def patches = params.PARAMETER.patches.each{patchNumber ->
+                paramsAsJson.patches.each{patchNumber ->
                     commonPatchFunctions.notifyDb(patchNumber,"assembleAndDeploy",null,params.PARAMETER.errorNotification)
                 }
             }
