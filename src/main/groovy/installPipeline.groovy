@@ -29,12 +29,12 @@ pipeline {
                 parallel(
                         "db-install": {
                             script {
-                                println "TODO JHE -> db-install on ${params.TARGET} with paramsAsJson = ${paramsAsJson}"
+                                installPatchFunctions.installDb(params.TARGET,paramsAsJson)
                             }
                         },
                         "java-install": {
                             script {
-                                println "TODO JHE -> java-install on ${params.TARGET} with paramsAsJson = ${paramsAsJson}"
+                                installPatchFunctions.installJavaServices(params.TARGET,paramsAsJson)
                             }
                         }
                 )
