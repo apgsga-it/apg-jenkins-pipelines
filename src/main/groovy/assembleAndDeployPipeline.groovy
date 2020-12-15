@@ -36,7 +36,7 @@ pipeline {
         stage("Starting logged") {
             steps {
                 script {
-                    assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "Assemble and Deploy started")
+                    assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "Started")
                 }
             }
         }
@@ -62,7 +62,7 @@ pipeline {
     post {
         success {
             script {
-                assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "Assemble and Deploy done")
+                assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "Done")
                 paramsAsJson.patches.each{patchNumber ->
                     commonPatchFunctions.notifyDb(patchNumber,"assembleAndDeploy",paramsAsJson.successNotification,null)
                 }

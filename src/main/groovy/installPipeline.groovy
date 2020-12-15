@@ -18,7 +18,7 @@ pipeline {
         stage("Starting logged") {
             steps {
                 script {
-                    assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "Installation started")
+                    installPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "Started")
                 }
             }
         }
@@ -44,7 +44,7 @@ pipeline {
     post {
         success {
             script {
-                assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "Installation done")
+                installPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "Done")
                 paramsAsJson.patches.each{patchNumber ->
                     commonPatchFunctions.notifyDb(patchNumber,"install",paramsAsJson.successNotification,null)
                 }
