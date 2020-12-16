@@ -12,7 +12,7 @@ import groovy.json.JsonSlurperClassic
 
 //def patchConfig = commonPatchFunctions.readPatchJsonFileFromStash("PatchFile")
 
-def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
+def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETERS)
 
 pipeline {
 //	options {
