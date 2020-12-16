@@ -36,18 +36,12 @@ pipeline {
 				parallel(
 						"db-build": {
 							script {
-
-								println "DB-Build with following parameters : ${paramsAsJson}"
-
-//								patchfunctions.patchBuildDbZip(patchConfig, params.TARGET)
+								patchfunctions.patchBuildDbZip(paramsAsJson)
 							}
 						},
 						"java-build": {
 							script {
-
-								println "Java-Build with following parameters : ${paramsAsJson}"
-
-//								patchfunctions.patchBuildsConcurrent(patchConfig, params.TARGET)
+								patchfunctions.patchBuildsConcurrent(paramsAsJson)
 							}
 						}
 				)
