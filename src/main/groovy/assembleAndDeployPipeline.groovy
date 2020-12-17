@@ -8,8 +8,6 @@ pipeline {
     agent any
 
     parameters {
-        //TODO JHE (09.12.2020) : couldn't we provide the target only as part of the PARAMETER params? Waiting on IT-36505
-        string(name: 'TARGET')
         string(name: 'PARAMETER', description: 'JSON String containing all required info')
     }
 
@@ -36,7 +34,7 @@ pipeline {
         stage("Starting logged") {
             steps {
                 script {
-                    assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "Started")
+                    assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started")
                 }
             }
         }
@@ -47,12 +45,12 @@ pipeline {
                 parallel(
                         "db-assemble": {
                             script {
-                                assembleAndDeployPatchFunctions.assembleAndDeployDb(params.TARGET, paramsAsJson)
+                                assembleAndDeployPatchFunctions.assembleAndDeployDb(paramsAsJson)
                             }
                         },
                         "java-assemble": {
                             script {
-                                assembleAndDeployPatchFunctions.assembleAndDeployJavaService(params.TARGET, paramsAsJson)
+                                assembleAndDeployPatchFunctions.assembleAndDeployJavaService(paramsAsJson)
                             }
                         }
                 )
@@ -62,15 +60,15 @@ pipeline {
     post {
         success {
             script {
-                assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "Done")
-                paramsAsJson.patches.each{patchNumber ->
+                assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done")
+                paramsAsJson.patchNumbers.each{patchNumber ->
                     commonPatchFunctions.notifyDb(patchNumber,"assembleAndDeploy",paramsAsJson.successNotification,null)
                 }
             }
         }
         unsuccessful {
             script {
-                paramsAsJson.patches.each{patchNumber ->
+                paramsAsJson.patchNumbers.each{patchNumber ->
                     commonPatchFunctions.notifyDb(patchNumber,"assembleAndDeploy",null,paramsAsJson.errorNotification)
                 }
             }
