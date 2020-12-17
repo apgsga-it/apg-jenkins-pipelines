@@ -15,7 +15,6 @@ pipelineJob (jobName) {
 	logRotator(3653,10,3653,-1) // ten years legal retention period
 	description("Pipeline for ${jobPreFix}")
 	parameters {
-		stringParam('TARGET',"${target}", "Target for ${jobPreFix} Pipeline ")
 		stringParam('PARAMETER', "${parameter}", "JSON Parameter for ${jobPreFix} Pipeline")
 	}
 	properties {
