@@ -8,8 +8,6 @@ pipeline {
     agent any
 
     parameters {
-        //TODO JHE (09.12.2020) : couldn't we provide the target only as part of the PARAMETER params? Waiting on IT-36505
-        string(name: 'TARGET')
         string(name: 'PARAMETER', description: 'JSON String containing all required info')
     }
 
@@ -18,7 +16,8 @@ pipeline {
         stage("Starting logged") {
             steps {
                 script {
-                    installPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "Started")
+                    commonPatchFunctions.log("Pipeline started with following parameter : ${paramsAsJson}")
+                    installPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started")
                 }
             }
         }
@@ -29,12 +28,12 @@ pipeline {
                 parallel(
                         "db-install": {
                             script {
-                                installPatchFunctions.installDb(params.TARGET,paramsAsJson)
+                                installPatchFunctions.installDb(paramsAsJson)
                             }
                         },
                         "java-install": {
                             script {
-                                installPatchFunctions.installJavaServices(params.TARGET,paramsAsJson)
+                                installPatchFunctions.installJavaServices(paramsAsJson)
                             }
                         }
                 )
@@ -44,15 +43,15 @@ pipeline {
     post {
         success {
             script {
-                installPatchFunctions.logPatchActivity(paramsAsJson.patches, params.TARGET, "Done")
-                paramsAsJson.patches.each{patchNumber ->
+                installPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done")
+                paramsAsJson.patchNumbers.each{patchNumber ->
                     commonPatchFunctions.notifyDb(patchNumber,"install",paramsAsJson.successNotification,null)
                 }
             }
         }
         unsuccessful {
             script {
-                paramsAsJson.patches.each{patchNumber ->
+                paramsAsJson.patchNumbers.each{patchNumber ->
                     commonPatchFunctions.notifyDb(patchNumber,"install",null,paramsAsJson.errorNotification)
                 }
             }
