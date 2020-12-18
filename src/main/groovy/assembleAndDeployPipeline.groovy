@@ -34,6 +34,7 @@ pipeline {
         stage("Starting logged") {
             steps {
                 script {
+                    commonPatchFunctions.log("Pipeline started with following parameter : ${paramsAsJson}")
                     assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started")
                 }
             }
