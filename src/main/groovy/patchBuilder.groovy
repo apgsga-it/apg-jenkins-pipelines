@@ -17,11 +17,6 @@ stageList.each {stage ->
 		logRotator(3653, 10, 3653, -1) // ten years legal retention period
 		description("Patch Pipeline for : ${patchName}")
 		parameters {
-//			fileParam('patchFile.json', 'JSON file for the patch corresponding to this Pipeline')
-//			stringParam('TARGET', "", "Target for which Patch will be build")
-//			stringParam('STAGE', stage, "Stage for which Pipeline will be build")
-//			stringParam('SUCCESS_NOTIFICATION', "", "Notification sent back to the DB if everything ran fine.")
-//			stringParam('ERROR_NOTIFICATION', "", "Notification sent back to the DB if a problem occured.")
 			stringParam('PARAMETERS',"","All required parameters in JSON format.")
 		}
 		properties {
@@ -29,6 +24,7 @@ stageList.each {stage ->
 	}
 }
 
+// TODO JHE (07.01.2021): Will be implemented with IT-35966
 /*
 pipelineJob (downLoadJobName) {
 	authenticationToken(downLoadJobName)
@@ -47,5 +43,4 @@ pipelineJob (downLoadJobName) {
 	properties {
 	}
 }
-
  */
