@@ -12,10 +12,9 @@ pipeline {
     }
 
     stages {
-        // TODO JHE (14.12.2020): This will probably be done differently, or maybe not necessary as soon as IT-36715 will be done
+        // TODO JHE (14.12.2020): Depending on how IT-36715 will be implemented, we might remove this complete stage.
         stage("Copy Revision file") {
             steps {
-                //TODO JHE (11.12.2020) : get the lock name from a parameter, and coordonate it with operations done during build Pipeline
                 lock("revisionFileOperation") {
                     fileOperations([
                             folderCreateOperation(folderPath: "${env.WORKSPACE}/clonedInformation"),
