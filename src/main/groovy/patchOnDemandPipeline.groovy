@@ -37,7 +37,18 @@ pipeline {
 		}
 		stage("Assemble and Deploy") {
 			steps {
-				println "HERE WILL THE ASSEMBLE AND DEPLOY RUN"
+				parallel(
+						"db-assemble": {
+							script {
+								assembleAndDeployPatchFunctions.assembleAndDeployDb(paramsAsJson)
+							}
+						},
+						"java-assemble": {
+							script {
+								assembleAndDeployPatchFunctions.assembleAndDeployJavaService(paramsAsJson)
+							}
+						}
+				)
 			}
 		}
 		stage("Install") {
