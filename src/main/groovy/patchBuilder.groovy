@@ -24,8 +24,6 @@ stageList.each {stage ->
 	}
 }
 
-// TODO JHE (07.01.2021): Will be implemented with IT-35966
-/*
 pipelineJob (downLoadJobName) {
 	authenticationToken(downLoadJobName)
 	concurrentBuild(false)
@@ -38,9 +36,8 @@ pipelineJob (downLoadJobName) {
 	logRotator(3653,10,3653,-1) // ten years legal retention period
 	description("OnDemand Patch Pipeline for : ${patchName}")
 	parameters {
-		stringParam('PARAMETER', "", "String mit dem die PatchConfig Parameter als JSON transportiert werden")
+		stringParam('PARAMETER', "", "All required parameters in JSON format.")
 	}
 	properties {
 	}
 }
- */
