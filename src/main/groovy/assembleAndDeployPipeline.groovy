@@ -12,23 +12,6 @@ pipeline {
     }
 
     stages {
-        // TODO JHE (14.12.2020): Depending on how IT-36715 will be implemented, we might remove this complete stage.
-        stage("Copy Revision file") {
-            steps {
-                lock("revisionFileOperation") {
-                    fileOperations([
-                            folderCreateOperation(folderPath: "${env.WORKSPACE}/clonedInformation"),
-                    ])
-                    dir(env.GRADLE_USER_HOME_PATH) {
-                        fileOperations([
-                                fileCopyOperation(includes: "Revisions.json", targetLocation: "${env.WORKSPACE}/clonedInformation")
-                        ])
-                    }
-
-                }
-            }
-        }
-
         //JHE (14.12.2020): This is not really a stage ... but Jenkins won't accept to have step done before parallel tasks (below)
         stage("Starting logged") {
             steps {
