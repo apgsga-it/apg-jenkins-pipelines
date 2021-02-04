@@ -29,7 +29,7 @@ pipeline {
 						},
 						"java-build": {
 							script {
-								patchfunctions.patchBuildsConcurrent(paramsAsJson)
+								patchfunctions.patchBuildsConcurrent(paramsAsJson,revisionClonedPath)
 							}
 						}
 				)
