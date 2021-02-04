@@ -36,7 +36,7 @@ pipelineJob (downLoadJobName) {
 	logRotator(3653,10,3653,-1) // ten years legal retention period
 	description("OnDemand Patch Pipeline for : ${patchName}")
 	parameters {
-		stringParam('PARAMETER', "", "All required parameters in JSON format.")
+		stringParam('PARAMETERS', "", "All required parameters in JSON format.")
 	}
 	properties {
 	}
