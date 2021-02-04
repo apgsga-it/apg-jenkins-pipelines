@@ -1,27 +1,57 @@
 #!groovy
-library 'patch-global-functions'
-library 'patch-deployment-functions'
 import groovy.json.JsonSlurperClassic
-#! WORK IN PROGRESS NOT READY FOR TESTING
-properties([
-	parameters([
-		stringParam(
-		defaultValue: "",
-		description: 'Parameter',
-		name: 'PARAMETER'
-		)
-	])
-])
 
-def patchConfig = patchfunctions.readPatchFile(params.PARAMETER)
-patchfunctions.initPatchConfig(patchConfig,params)
+def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETERS)
 
-// Mainline
-def defaultNodes = [[label:env.DEFAULT_JADAS_ONDEMAND_NODE,serviceName:"jadas"]]
-def target = [envName:"OnDemand",targetName:patchConfig.installationTarget,nodes:defaultNodes]
-patchConfig.currentTarget = patchConfig.installationTarget
-patchConfig.targetBean = target
+pipeline {
+	parameters {
+		string(name: 'PARAMETERS', description: "JSON parameters")
+	}
 
-patchfunctions.stage(target,"Installationsbereit",patchConfig,"Build", patchfunctions.&patchBuildsConcurrent)
-patchfunctions.stage(target,"Installationsbereit",patchConfig,"Assembly", patchfunctions.&assembleDeploymentArtefacts)
-patchfunctions.stage(target,"Installation",patchConfig,"Install", patchDeployment.&installDeploymentArtifacts)
+	agent any
+
+	stages {
+		stage("Build") {
+			steps {
+				parallel(
+						"db-build": {
+							script {
+								patchfunctions.patchBuildDbZip(paramsAsJson)
+							}
+						},
+						"java-build": {
+							script {
+								patchfunctions.patchBuildsConcurrent(paramsAsJson)
+							}
+						}
+				)
+			}
+		}
+		stage("Assemble and Deploy") {
+			steps {
+				println "HERE WILL THE ASSEMBLE AND DEPLOY RUN"
+			}
+		}
+		stage("Install") {
+			steps {
+				println "HERE WILL THE INSTALL RUN"
+			}
+		}
+	}
+	/*
+	post {
+		success {
+			script {
+				commonPatchFunctions.notifyDb(paramsAsJson.patchNumber,paramsAsJson.stageName,paramsAsJson.successNotification,null)
+			}
+		}
+		unsuccessful {
+			script {
+				commonPatchFunctions.notifyDb(paramsAsJson.patchNumber,paramsAsJson.stageName,null,paramsAsJson.errorNotification)
+			}
+		}
+
+	}
+
+	 */
+}
