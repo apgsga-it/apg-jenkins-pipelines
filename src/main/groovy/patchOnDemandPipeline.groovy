@@ -2,6 +2,7 @@
 import groovy.json.JsonSlurperClassic
 
 def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETERS)
+def revisionClonedPath = "/var/jenkins/gradle/home/patch${paramsAsJson.patchNumber}_${paramsAsJson.target}"
 
 pipeline {
 	parameters {
@@ -11,6 +12,13 @@ pipeline {
 	agent any
 
 	stages {
+		stage("Create local Revision folder") {
+			steps {
+				script {
+					commonPatchFunctions.createFolder(revisionClonedPath)
+				}
+			}
+		}
 		stage("Build") {
 			steps {
 				parallel(
@@ -38,20 +46,22 @@ pipeline {
 			}
 		}
 	}
-	/*
 	post {
 		success {
 			script {
-				commonPatchFunctions.notifyDb(paramsAsJson.patchNumber,paramsAsJson.stageName,paramsAsJson.successNotification,null)
+				println "TODO JHE"
 			}
 		}
 		unsuccessful {
 			script {
-				commonPatchFunctions.notifyDb(paramsAsJson.patchNumber,paramsAsJson.stageName,null,paramsAsJson.errorNotification)
+				println "TODO JHE"
+			}
+		}
+		always {
+			script {
+				commonPatchFunctions.deleteFolder(revisionClonedPath)
 			}
 		}
 
 	}
-
-	 */
 }
