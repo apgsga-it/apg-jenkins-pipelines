@@ -53,26 +53,26 @@ pipeline {
 		}
 		stage("Install") {
 			steps {
-				println "HERE WILL THE INSTALL RUN"
+				parallel(
+						"db-install": {
+							script {
+								installPatchFunctions.installDb(paramsAsJson)
+							}
+						},
+						"java-install": {
+							script {
+								installPatchFunctions.installJavaServices(paramsAsJson)
+							}
+						}
+				)
 			}
 		}
 	}
 	post {
-		success {
-			script {
-				println "TODO JHE"
-			}
-		}
-		unsuccessful {
-			script {
-				println "TODO JHE"
-			}
-		}
 		always {
 			script {
 				commonPatchFunctions.deleteFolder(revisionClonedPath)
 			}
 		}
-
 	}
 }
