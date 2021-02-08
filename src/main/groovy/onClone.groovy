@@ -11,10 +11,10 @@ pipeline {
 	agent any
 
 	stages {
-		stage("Create local Revision folder") {
+		stage("Reset revision") {
 			steps {
 				script {
-					commonPatchFunctions.createFolder(revisionClonedPath)
+					println "Resetting revision of ${paramsAsJson.target} with last revision of ${paramsAsJson.src}"
 				}
 			}
 		}
