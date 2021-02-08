@@ -16,7 +16,7 @@ pipeline {
 		stage("Pre-process verification") {
 			steps {
 				script {
-					if(target.equalsIgnoreCase("dchpi211")) {
+					if(target.equalsIgnoreCase("chpi211")) {
 						error("Target cannot be production environment !!")
 					}
 
