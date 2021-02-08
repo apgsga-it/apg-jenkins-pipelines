@@ -2,6 +2,8 @@
 import groovy.json.JsonSlurperClassic
 
 def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETERS)
+def src = paramsAsJson.src
+def target = paramsAsJson.target
 
 pipeline {
 	parameters {
@@ -11,10 +13,25 @@ pipeline {
 	agent any
 
 	stages {
+		stage("Pre-process verification") {
+			steps {
+				script {
+					if(target.equalsIgnoreCase("chpi211")) {
+						error("Target cannot be production environment !!")
+					}
+
+					// We consider chqi211 same as chpi211 (from source point of view only)
+					if(src.equalsIgnoreCase("chqi211")) {
+						src = "CHPI211"
+					}
+
+				}
+			}
+		}
 		stage("Reset revision") {
 			steps {
 				script {
-					println "Resetting revision of ${paramsAsJson.target} with last revision of ${paramsAsJson.src}"
+					commonPatchFunctions.resetRevisionFor(src,target)
 				}
 			}
 		}
