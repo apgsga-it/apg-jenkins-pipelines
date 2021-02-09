@@ -38,10 +38,10 @@ pipeline {
 						commonPatchFunctions.createFolder(revisionClonedPath)
 						parallel(
 								"db-build": {
-										patchfunctions.patchBuildDbZip(paramsAsJson)
+										patchfunctions.patchBuildDbZip(p)
 								},
 								"java-build": {
-										patchfunctions.patchBuildsConcurrent(paramsAsJson, revisionClonedPath)
+										patchfunctions.patchBuildsConcurrent(p, revisionClonedPath)
 								}
 						)
 						commonPatchFunctions.deleteFolder(revisionClonedPath)
