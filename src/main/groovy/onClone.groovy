@@ -31,23 +31,21 @@ pipeline {
 		}
 		stage("Build") {
 			steps {
-				paramsAsJson.patches.each{ p ->
-					def dateInfo = new SimpleDateFormat("yyyyMMdd_HHmmss_S").parse(new Date())
-					def revisionClonedPath = "${env.GRADLE_USER_HOME_PATH}/onclone_${paramsAsJson.target}_patch${p.patchNumber}_${dateInfo}"
-					commonPatchFunctions.createFolder(revisionClonedPath)
-					parallel(
-							"db-build": {
-								script {
-									patchfunctions.patchBuildDbZip(paramsAsJson)
+				script {
+					paramsAsJson.patches.each { p ->
+						def dateInfo = new SimpleDateFormat("yyyyMMdd_HHmmss_S").parse(new Date())
+						def revisionClonedPath = "${env.GRADLE_USER_HOME_PATH}/onclone_${paramsAsJson.target}_patch${p.patchNumber}_${dateInfo}"
+						commonPatchFunctions.createFolder(revisionClonedPath)
+						parallel(
+								"db-build": {
+										patchfunctions.patchBuildDbZip(paramsAsJson)
+								},
+								"java-build": {
+										patchfunctions.patchBuildsConcurrent(paramsAsJson, revisionClonedPath)
 								}
-							},
-							"java-build": {
-								script {
-									patchfunctions.patchBuildsConcurrent(paramsAsJson,revisionClonedPath)
-								}
-							}
-					)
-					commonPatchFunctions.deleteFolder(revisionClonedPath)
+						)
+						commonPatchFunctions.deleteFolder(revisionClonedPath)
+					}
 				}
 			}
 		}
