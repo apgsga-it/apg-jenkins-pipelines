@@ -33,7 +33,7 @@ pipeline {
 			steps {
 				script {
 					paramsAsJson.patches.each { p ->
-						def dateInfo = new SimpleDateFormat("yyyyMMdd_HHmmss_S").parse(new Date())
+						def dateInfo = new SimpleDateFormat("yyyyMMdd_HHmmss_S").format(new Date())
 						def revisionClonedPath = "${env.GRADLE_USER_HOME_PATH}/onclone_${paramsAsJson.target}_patch${p.patchNumber}_${dateInfo}"
 						commonPatchFunctions.createFolder(revisionClonedPath)
 						parallel(
