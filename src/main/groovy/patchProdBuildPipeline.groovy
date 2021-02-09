@@ -2,7 +2,7 @@
 import groovy.json.JsonSlurperClassic
 
 def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETERS)
-def revisionClonedPath = "/var/jenkins/gradle/home/patch${paramsAsJson.patchNumber}_${paramsAsJson.target}"
+def revisionClonedPath = "${env.GRADLE_USER_HOME_PATH}/patch${paramsAsJson.patchNumber}_${paramsAsJson.target}"
 
 pipeline {
 	parameters {

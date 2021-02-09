@@ -1,6 +1,8 @@
 #!groovy
 import groovy.json.JsonSlurperClassic
 
+import java.text.SimpleDateFormat
+
 def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETERS)
 
 pipeline {
@@ -29,23 +31,24 @@ pipeline {
 		}
 		stage("Build") {
 			steps {
-				println "todo : here we build"
-				println "paramsAsJson = ${paramsAsJson}"
-				/*
-				parallel(
-						"db-build": {
-							script {
-								patchfunctions.patchBuildDbZip(paramsAsJson)
+				paramsAsJson.patches.each{ p ->
+					def dateInfo = new SimpleDateFormat("yyyyMMdd_HHmmss_S").parse(new Date())
+					def revisionClonedPath = "${env.GRADLE_USER_HOME_PATH}/onclone_${paramsAsJson.target}_patch${p.patchNumber}_${dateInfo}"
+					commonPatchFunctions.createFolder(revisionClonedPath)
+					parallel(
+							"db-build": {
+								script {
+									patchfunctions.patchBuildDbZip(paramsAsJson)
+								}
+							},
+							"java-build": {
+								script {
+									patchfunctions.patchBuildsConcurrent(paramsAsJson,revisionClonedPath)
+								}
 							}
-						},
-						"java-build": {
-							script {
-								patchfunctions.patchBuildsConcurrent(paramsAsJson,revisionClonedPath)
-							}
-						}
-				)
-
-				 */
+					)
+					commonPatchFunctions.deleteFolder(revisionClonedPath)
+				}
 			}
 		}
 		stage("Assemble and Deploy") {
