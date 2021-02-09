@@ -36,7 +36,6 @@ pipeline {
 						def dateInfo = new SimpleDateFormat("yyyyMMdd_HHmmss_S").format(new Date())
 						def revisionClonedPath = "${env.GRADLE_USER_HOME_PATH}/onclone_${paramsAsJson.target}_patch${p.patchNumber}_${dateInfo}"
 						commonPatchFunctions.createFolder(revisionClonedPath)
-						p.target = paramsAsJson.target
 						parallel(
 								"db-build": {
 										patchfunctions.patchBuildDbZip(p)
