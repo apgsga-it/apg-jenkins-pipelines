@@ -19,7 +19,7 @@ pipeline {
 				script {
 
 
-					def buildGradle = libraryResource('build.gradle.resetRevision')
+					def buildGradle = libraryResource('../../../build.gradle.resetRevision')
 					writeFile(file: "build.gradle", text: buildGradle)
 
 
