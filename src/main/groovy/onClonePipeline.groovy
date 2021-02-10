@@ -19,7 +19,7 @@ pipeline {
 				script {
 
 
-					def buildGradle = libraryResource("onCloneFunctions.groovy")
+					def buildGradle = libraryResource("/build.gradle.resetRevision")
 					writeFile(file: "build.gradle", text: buildGradle)
 
 
