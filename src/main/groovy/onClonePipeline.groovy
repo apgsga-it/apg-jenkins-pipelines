@@ -32,16 +32,16 @@ pipeline {
 		stage("Build") {
 			steps {
 				script {
-					paramsAsJson.patches.each { p ->
+					paramsAsJson.buildParameters.each { bp ->
 						def dateInfo = new SimpleDateFormat("yyyyMMdd_HHmmss_S").format(new Date())
-						def revisionClonedPath = "${env.GRADLE_USER_HOME_PATH}/onclone_${paramsAsJson.target}_patch${p.patchNumber}_${dateInfo}"
+						def revisionClonedPath = "${env.GRADLE_USER_HOME_PATH}/onclone_${paramsAsJson.target}_patch${bp.patchNumber}_${dateInfo}"
 						commonPatchFunctions.createFolder(revisionClonedPath)
 						parallel(
 								"db-build": {
-										patchfunctions.patchBuildDbZip(p)
+										patchfunctions.patchBuildDbZip(bp)
 								},
 								"java-build": {
-										patchfunctions.patchBuildsConcurrent(p, revisionClonedPath)
+										patchfunctions.patchBuildsConcurrent(bp, revisionClonedPath)
 								}
 						)
 						commonPatchFunctions.deleteFolder(revisionClonedPath)
@@ -51,8 +51,6 @@ pipeline {
 		}
 		stage("Assemble and Deploy") {
 			steps {
-				println "todo : here we assemble and deploy"
-				/*
 				parallel(
 						"db-assemble": {
 							script {
@@ -65,16 +63,6 @@ pipeline {
 							}
 						}
 				)
-
-				 */
-			}
-		}
-	}
-	post {
-		always {
-			script {
-				println "to do .... probably send mail"
-				//commonPatchFunctions.deleteFolder(revisionClonedPath)
 			}
 		}
 	}
