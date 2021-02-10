@@ -1,7 +1,8 @@
 #!groovy
 import groovy.json.JsonSlurperClassic
-
 import java.text.SimpleDateFormat
+
+@Library('onCloneFunctions')
 
 def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETERS)
 
