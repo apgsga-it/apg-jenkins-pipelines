@@ -54,12 +54,12 @@ pipeline {
 				parallel(
 						"db-assemble": {
 							script {
-								assembleAndDeployPatchFunctions.assembleAndDeployDb(paramsAsJson.adParams)
+								assembleAndDeployPatchFunctions.assembleAndDeployDb(paramsAsJson.adParameters)
 							}
 						},
 						"java-assemble": {
 							script {
-								assembleAndDeployPatchFunctions.assembleAndDeployJavaService(paramsAsJson.adParams)
+								assembleAndDeployPatchFunctions.assembleAndDeployJavaService(paramsAsJson.adParameters)
 							}
 						}
 				)
