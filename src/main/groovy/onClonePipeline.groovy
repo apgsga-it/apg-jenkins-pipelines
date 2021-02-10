@@ -24,6 +24,7 @@ pipeline {
 		stage("Reset revision") {
 			steps {
 				script {
+					deleteDir()
 					onCloneFunctions.resetRevisionFor(paramsAsJson)
 				}
 			}
