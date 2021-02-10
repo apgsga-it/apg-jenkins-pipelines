@@ -24,6 +24,7 @@ pipeline {
 		stage("Reset revision") {
 			steps {
 				script {
+					cleanWs()
 					deleteDir()
 					onCloneFunctions.resetRevisionFor(paramsAsJson)
 				}
