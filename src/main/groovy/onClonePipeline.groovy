@@ -2,8 +2,6 @@
 import groovy.json.JsonSlurperClassic
 import java.text.SimpleDateFormat
 
-@Library('onCloneFunctions')
-
 def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETERS)
 
 pipeline {
@@ -17,13 +15,6 @@ pipeline {
 		stage("Pre-process verification") {
 			steps {
 				script {
-
-
-					def buildGradle = libraryResource('build.gradle.resetRevision')
-					writeFile(file: "build.gradle", text: buildGradle)
-
-
-
 					if(paramsAsJson.target.equalsIgnoreCase("chpi211")) {
 						error("Target cannot be production environment !!")
 					}
