@@ -7,6 +7,10 @@ def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
 pipeline {
     agent any
 
+    options {
+        lock resource: "assembleDeployInstall_${paramsAsJson.target}"
+    }
+
     parameters {
         string(name: 'PARAMETER', description: 'JSON String containing all required info')
     }
