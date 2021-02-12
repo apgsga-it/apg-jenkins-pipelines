@@ -17,18 +17,6 @@ pipeline {
 
 
     stages {
-
-        /*
-        stage("Locking for assemble/deploy/install") {
-            steps {
-                script {
-                    commonPatchFunctions.lockAssembleDeployInstall(paramsAsJson.target)
-                }
-            }
-        }
-
-         */
-
         //JHE (14.12.2020): This is not really a stage ... but Jenkins won't accept to have step done before parallel tasks (below)
         stage("Starting logged") {
             steps {
@@ -73,14 +61,5 @@ pipeline {
                 }
             }
         }
-        /*
-        cleanup {
-            script {
-                commonPatchFunctions.unlockAssembleDeployInstall(paramsAsJson.target)
-            }
-        }
-
-         */
-
     }
 }
