@@ -6,9 +6,7 @@ def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
 
 pipeline {
 
-    lock("test") {
         agent any
-
 
         parameters {
             string(name: 'PARAMETER', description: 'JSON String containing all required info')
@@ -61,5 +59,4 @@ pipeline {
             }
 
         }
-    }
 }
