@@ -1,6 +1,6 @@
 def now = new Date()
 timeAsString = now.format("yyyyMMdd-HHmmss")
-def jobName = "${jobPreFix}-${target}-${timeAsString}"
+def jobName = "${timeAsString}-${jobPreFix}${target}"
 pipelineJob (jobName) {
 	concurrentBuild(false)
 	definition {
