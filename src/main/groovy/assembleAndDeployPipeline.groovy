@@ -49,12 +49,12 @@ pipeline {
         success {
             script {
                 assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done")
-                commonPatchFunctions.notifyDb(paramsAsJson.patchNumbers.join(","),paramsAsJson.target,paramsAsJson.successNotification)
+                commonPatchFunctions.notifyDb(paramsAsJson.patchNumbers,paramsAsJson.target,paramsAsJson.successNotification)
             }
         }
         unsuccessful {
             script {
-                commonPatchFunctions.notifyDb(paramsAsJson.patchNumbers.join(","),paramsAsJson.target,paramsAsJson.errorNotification)
+                commonPatchFunctions.notifyDb(paramsAsJson.patchNumbers,paramsAsJson.target,paramsAsJson.errorNotification)
             }
         }
     }
