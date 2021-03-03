@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 
 def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETERS)
 def dateInfo = new SimpleDateFormat("yyyyMMdd_HHmmss_S").format(new Date())
-def revisionClonedPath = "${env.GRADLE_USER_HOME_PATH}/patch${paramsAsJson.patchNumber}_${paramsAsJson.target}_${dateInfo}"
+def revisionClonedPath = "${env.GRADLE_USER_HOME_PATH}/patch${paramsAsJson.patchNumbers}_${paramsAsJson.target}_${dateInfo}"
 
 pipeline {
 	parameters {
