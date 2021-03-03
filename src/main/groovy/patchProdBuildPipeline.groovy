@@ -42,12 +42,12 @@ pipeline {
 	post {
 		success {
 				script {
-					commonPatchFunctions.notifyDb(paramsAsJson.patchNumber,paramsAsJson.stageName,paramsAsJson.successNotification,null)
+					commonPatchFunctions.notifyDb(paramsAsJson.patchNumber,paramsAsJson.target,paramsAsJson.successNotification)
 				}
 		}
 		unsuccessful {
 				script {
-					commonPatchFunctions.notifyDb(paramsAsJson.patchNumber,paramsAsJson.stageName,null,paramsAsJson.errorNotification)
+					commonPatchFunctions.notifyDb(paramsAsJson.patchNumber,paramsAsJson.target,paramsAsJson.errorNotification)
 				}
 		}
 		always {
