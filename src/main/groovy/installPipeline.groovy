@@ -48,6 +48,7 @@ pipeline {
         post {
             success {
                 script {
+                    installPatchFunctions.installationPostProcess(paramsAsJson)
                     installPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done")
                     commonPatchFunctions.notifyDb(paramsAsJson.patchNumbers.join(","),paramsAsJson.target,paramsAsJson.successNotification)
                 }
