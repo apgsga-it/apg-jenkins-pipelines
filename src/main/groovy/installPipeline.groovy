@@ -46,8 +46,15 @@ pipeline {
             }
         }
         post {
+            always {
+                script {
+                    //TODO JHE: Move this to "success" !!!! Here just for testing the new parameter on JHE local environment
+                    installPatchFunctions.installationPostProcess(paramsAsJson)
+                }
+            }
             success {
                 script {
+
                     installPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done")
                     commonPatchFunctions.notifyDb(paramsAsJson.patchNumbers.join(","),paramsAsJson.target,paramsAsJson.successNotification)
                 }
