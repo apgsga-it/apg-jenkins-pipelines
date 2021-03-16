@@ -22,6 +22,13 @@ pipeline {
 				}
 			}
 		}
+		stage("Clean workspace") {
+			steps {
+				script {
+					deleteDir()
+				}
+			}
+		}
 		stage("Build") {
 			steps {
 				parallel(
@@ -41,14 +48,14 @@ pipeline {
 	}
 	post {
 		success {
-				script {
-					commonPatchFunctions.notifyDb(paramsAsJson.patchNumber,paramsAsJson.target,paramsAsJson.successNotification)
-				}
+			script {
+				commonPatchFunctions.notifyDb(paramsAsJson.patchNumber,paramsAsJson.target,paramsAsJson.successNotification)
+			}
 		}
 		unsuccessful {
-				script {
-					commonPatchFunctions.notifyDb(paramsAsJson.patchNumber,paramsAsJson.target,paramsAsJson.errorNotification)
-				}
+			script {
+				commonPatchFunctions.notifyDb(paramsAsJson.patchNumber,paramsAsJson.target,paramsAsJson.errorNotification)
+			}
 		}
 		always {
 			script {
