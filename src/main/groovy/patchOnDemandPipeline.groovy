@@ -67,6 +67,11 @@ pipeline {
 							script {
 								installPatchFunctions.installJavaServices(paramsAsJson)
 							}
+						},
+						"docker-install": {
+							script {
+								installPatchFunctions.installDockerServices(paramsAsJson)
+							}
 						}
 				)
 			}
