@@ -23,6 +23,13 @@ pipeline {
 				}
 			}
 		}
+		stage("Clean workspace") {
+			steps {
+				script {
+					deleteDir()
+				}
+			}
+		}
 		stage("Build") {
 			steps {
 				parallel(
