@@ -2,11 +2,11 @@
 import groovy.json.JsonSlurperClassic
 import java.text.SimpleDateFormat
 
-def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETERS)
+def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETER)
 
 pipeline {
 	parameters {
-		string(name: 'PARAMETERS', description: "JSON parameters")
+		string(name: 'PARAMETER', description: "JSON parameters")
 	}
 
 	agent any
