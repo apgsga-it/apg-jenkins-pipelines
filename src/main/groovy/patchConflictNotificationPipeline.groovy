@@ -53,7 +53,7 @@ pipeline {
                             }
                         }
 
-                        emailext to: conflict.emailAdress.join(";"), from: "it.architektur@apgsga.ch" , subject: "Patch Conflict(s)", body: "${body}"
+                        emailext to: conflict.emailAdress.join(";"), from: "it.architektur@apgsga.ch" , subject: "${env.PIPELINE_MAIL_ENV} / Patch Conflict(s)", body: "${body}"
                     }
                 }
             }
