@@ -31,12 +31,12 @@ pipeline {
                         if(!dbObjects.isEmpty()) {
                             body += System.getProperty('line.separator')
                             body += System.getProperty('line.separator')
-                            body += "Db Object(s)"
+                            body += "DB Object(s)"
                             body += System.getProperty('line.separator')
                             body += "============"
                             for(def dboModuleName : dbObjects.keySet()) {
                                 body += System.getProperty('line.separator')
-                                body += "DB-Object(s) for Module '${dboModuleName}'"
+                                body += "DB Object(s) for Module '${dboModuleName}'"
                                 dbObjects.get(dboModuleName).each { module ->
                                     body += System.getProperty('line.separator')
                                     body += " - Path: ${module.filePath} ; Object name: ${module.fileName}"
@@ -63,7 +63,7 @@ pipeline {
                         body += System.getProperty('line.separator')
                         body += "For any question, please contact UGE, JHE or STB."
 
-                        emailext to: conflict.emailAdress.join(";"), from: "it.architektur@apgsga.ch" , subject: "${env.PIPELINE_MAIL_ENV} / Patch Conflict(s)", body: "${body}"
+                        emailext to: conflict.emailAdress.join(";"), from: "it.architektur@apgsga.ch" , subject: "${env.PIPELINE_MAIL_ENV} - WARNING / Patch Conflict(s)", body: "${body}"
                     }
                 }
             }
