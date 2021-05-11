@@ -36,7 +36,7 @@ pipeline {
                             body += "============"
                             for(def dboModuleName : dbObjects.keySet()) {
                                 body += System.getProperty('line.separator')
-                                body += "DB-Object(s) for Module ${dboModuleName}"
+                                body += "DB-Object(s) for Module '${dboModuleName}'"
                                 dbObjects.get(dboModuleName).each { module ->
                                     body += System.getProperty('line.separator')
                                     body += " - Path: ${module.filePath} ; Object name: ${module.fileName}"
@@ -51,7 +51,7 @@ pipeline {
                             body += "================"
                             for(def service : javaArtifacts.keySet()) {
                                 body += System.getProperty('line.separator')
-                                body += "Artifact(s) for service ${service} :"
+                                body += "Artifact(s) for service '${service}' :"
                                 javaArtifacts.get(service).each{art ->
                                     body += System.getProperty('line.separator')
                                     body += " - Artifact Id: ${art.artifactId} ; Group Id: ${art.groupId} ; Version: ${art.version}"
