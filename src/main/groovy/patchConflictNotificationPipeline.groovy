@@ -34,7 +34,7 @@ pipeline {
                             body += "============"
                             dbObjects.each{dbo ->
                                 body += System.getProperty('line.separator')
-                                body += "Module Name: ${dbo.moduleName} // Path: ${dbo.filePath} // Object name: ${dbo.fileName}"
+                                body += " - Module Name: ${dbo.moduleName} // Path: ${dbo.filePath} // Object name: ${dbo.fileName}"
                             }
                         }
                         if(!javaArtifacts.isEmpty()) {
