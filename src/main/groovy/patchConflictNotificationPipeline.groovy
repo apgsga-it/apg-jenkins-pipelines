@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
 
-                    emailext to: "Julien.Helbling@apgsga.ch;Julien.Helbling@apgsga.ch", subject: "Test patch conflict", body: "this is only a test with hardcoded values ...."
+                    emailext to: "Julien.Helbling@apgsga.ch;helblingjulien@gmail.com", subject: "Test patch conflict", body: "this is only a test with hardcoded values ...."
                 }
             }
         }
