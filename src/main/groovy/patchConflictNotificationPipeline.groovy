@@ -7,7 +7,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('SendNotification') {
             steps {
                 script {
                     paramsAsJson.each{conflict ->
