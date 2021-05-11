@@ -23,8 +23,10 @@ pipeline {
                             body += "Docker Service(s)"
                             body += System.getProperty('line.separator')
                             body += "================="
-                            body += System.getProperty('line.separator')
-                            body += dockerServices.join(",")
+                            dockerServices.each{docker ->
+                                body += System.getProperty('line.separator')
+                                body += " - ${docker}"
+                            }
                         }
                         if(!dbObjects.isEmpty()) {
                             body += System.getProperty('line.separator')
@@ -34,7 +36,7 @@ pipeline {
                             body += "============"
                             dbObjects.each{dbo ->
                                 body += System.getProperty('line.separator')
-                                body += " - Module Name: ${dbo.moduleName} // Path: ${dbo.filePath} // Object name: ${dbo.fileName}"
+                                body += " - Module Name: ${dbo.moduleName} ; Path: ${dbo.filePath} ; Object name: ${dbo.fileName}"
                             }
                         }
                         if(!javaArtifacts.isEmpty()) {
@@ -48,7 +50,7 @@ pipeline {
                                 body += "Artifact(s) for service ${service} :"
                                 javaArtifacts.get(service).each{art ->
                                     body += System.getProperty('line.separator')
-                                    body += " - Artifact Id: ${art.artifactId} // Group Id: ${art.groupId} // Version: ${art.version}"
+                                    body += " - Artifact Id: ${art.artifactId} ; Group Id: ${art.groupId} ; Version: ${art.version}"
                                 }
                             }
                         }
