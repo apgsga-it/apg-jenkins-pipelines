@@ -34,9 +34,13 @@ pipeline {
                             body += "Db Object(s)"
                             body += System.getProperty('line.separator')
                             body += "============"
-                            dbObjects.each{dbo ->
+                            for(def dboModuleName : dbObjects.keySet()) {
                                 body += System.getProperty('line.separator')
-                                body += " - Module Name: ${dbo.moduleName} ; Path: ${dbo.filePath} ; Object name: ${dbo.fileName}"
+                                body += "DB-Object(s) for Module ${dboModuleName}"
+                                dbObjects.get(dboModuleName).each { module ->
+                                    body += System.getProperty('line.separator')
+                                    body += " - Path: ${dbo.filePath} ; Object name: ${dbo.fileName}"
+                                }
                             }
                         }
                         if(!javaArtifacts.isEmpty()) {
