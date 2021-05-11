@@ -39,7 +39,7 @@ pipeline {
                                 body += "DB-Object(s) for Module ${dboModuleName}"
                                 dbObjects.get(dboModuleName).each { module ->
                                     body += System.getProperty('line.separator')
-                                    body += " - Path: ${dbo.filePath} ; Object name: ${dbo.fileName}"
+                                    body += " - Path: ${module.filePath} ; Object name: ${module.fileName}"
                                 }
                             }
                         }
