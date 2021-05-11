@@ -14,7 +14,7 @@ pipeline {
         stage("SendMail") {
             steps {
                 script {
-                    println(paramsAsJson)
+                    emailext to: "Julien.Helbling@apgsga.ch", subject: "Test patch conflict", body: "this is only a test with hardcoded values ...."
                 }
             }
         }
