@@ -53,6 +53,10 @@ pipeline {
                             }
                         }
 
+                        body += System.getProperty('line.separator')
+                        body += System.getProperty('line.separator')
+                        body += "For any question, please contact UGE, JHE or STB."
+
                         emailext to: conflict.emailAdress.join(";"), from: "it.architektur@apgsga.ch" , subject: "${env.PIPELINE_MAIL_ENV} / Patch Conflict(s)", body: "${body}"
                     }
                 }
