@@ -16,6 +16,14 @@ pipeline {
 	agent any
 
 	stages {
+		//JHE (17.06.2021): This is not really a stage ... but Jenkins won't accept to have step done before parallel tasks (below)
+		stage("Starting logged") {
+			steps {
+				script {
+					commonPatchFunctions.log("Pipeline started with following parameter : ${paramsAsJson}")
+				}
+			}
+		}
 		stage("Create local Revision folder") {
 			steps {
 				script {
@@ -46,6 +54,14 @@ pipeline {
 				)
 			}
 		}
+		//JHE (17.06.2021): This is not really a stage ... but Jenkins won't accept to have step done before parallel tasks (below)
+		stage("Logging before assembleAndDeploy starts") {
+			steps {
+				script {
+					assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started")
+				}
+			}
+		}
 		stage("Assemble and Deploy") {
 			steps {
 				parallel(
@@ -60,6 +76,22 @@ pipeline {
 							}
 						}
 				)
+			}
+		}
+		//JHE (17.06.2021): This is not really a stage ... but Jenkins won't accept to have step done before parallel tasks (below)
+		stage("Logging assembleAndDeploy done") {
+			steps {
+				script {
+					assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done")
+				}
+			}
+		}
+		//JHE (17.06.2021): This is not really a stage ... but Jenkins won't accept to have step done before parallel tasks (below)
+		stage("Logging before Install starts") {
+			steps {
+				script {
+					installPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started")
+				}
 			}
 		}
 		stage("Install") {
@@ -81,6 +113,14 @@ pipeline {
 							}
 						}
 				)
+			}
+		}
+		//JHE (17.06.2021): This is not really a stage ... but Jenkins won't accept to have step done before parallel tasks (below)
+		stage("Logging Install done") {
+			steps {
+				script {
+					installPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done")
+				}
 			}
 		}
 	}

@@ -48,6 +48,14 @@ pipeline {
 				}
 			}
 		}
+		//JHE (17.06.2021): This is not really a stage ... but Jenkins won't accept to have step done before parallel tasks (below)
+		stage("Logging before assembleAndDeploy starts") {
+			steps {
+				script {
+					onCloneFunctions.logAssembleAndDeployPatchActivity(paramsAsJson.adParameters, "Started")
+				}
+			}
+		}
 		stage("Assemble and Deploy") {
 			steps {
 				parallel(
@@ -62,6 +70,14 @@ pipeline {
 							}
 						}
 				)
+			}
+		}
+		//JHE (17.06.2021): This is not really a stage ... but Jenkins won't accept to have step done before parallel tasks (below)
+		stage("Logging assembleAndDeploy done") {
+			steps {
+				script {
+					onCloneFunctions.logAssembleAndDeployPatchActivity(paramsAsJson.adParameters, "Done")
+				}
 			}
 		}
 	}
