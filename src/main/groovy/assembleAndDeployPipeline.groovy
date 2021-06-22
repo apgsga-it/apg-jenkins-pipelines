@@ -22,8 +22,7 @@ pipeline {
             steps {
                 script {
                     commonPatchFunctions.log("Pipeline started with following parameter : ${paramsAsJson}")
-                    def buildUrl = "${BUILD_URL}"
-                    assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started", buildUrl)
+                    assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started", BUILD_URL)
                 }
             }
         }
@@ -49,7 +48,7 @@ pipeline {
     post {
         success {
             script {
-                assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done", "todo build_url")
+                assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done", BUILD_URL)
                 commonPatchFunctions.notifyDb(paramsAsJson.patchNumbers.join(","),paramsAsJson.target,paramsAsJson.successNotification)
             }
         }
