@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     commonPatchFunctions.log("Pipeline started with following parameter : ${paramsAsJson}")
-                    assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started", env.BUILD_URL)
+                    assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started", BUILD_URL)
                 }
             }
         }
