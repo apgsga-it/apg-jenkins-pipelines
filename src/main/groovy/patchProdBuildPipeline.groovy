@@ -40,6 +40,7 @@ pipeline {
 						},
 						"java-build": {
 							script {
+								paramsAsJson.buildUrl = env.BUILD_URL
 								patchfunctions.patchBuildsConcurrent(paramsAsJson,revisionClonedPath)
 							}
 						}
