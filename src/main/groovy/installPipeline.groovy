@@ -22,7 +22,7 @@ pipeline {
                 steps {
                     script {
                         commonPatchFunctions.log("Pipeline started with following parameter : ${paramsAsJson}")
-                        installPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started", env.BUILD_URL)
+                        installPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started", BUILD_URL)
                     }
                 }
             }
@@ -54,7 +54,7 @@ pipeline {
             success {
                 script {
                     installPatchFunctions.installationPostProcess(paramsAsJson)
-                    installPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done", env.BUILD_URL)
+                    installPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done", BUILD_URL)
                     commonPatchFunctions.notifyDb(paramsAsJson.patchNumbers.join(","),paramsAsJson.target,paramsAsJson.successNotification)
                 }
             }

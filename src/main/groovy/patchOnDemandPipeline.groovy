@@ -48,7 +48,7 @@ pipeline {
 						},
 						"java-build": {
 							script {
-								paramsAsJson.buildUrl = env.BUILD_URL
+								paramsAsJson.buildUrl = BUILD_URL
 								patchfunctions.patchBuildsConcurrent(paramsAsJson,revisionClonedPath)
 							}
 						}
@@ -59,7 +59,7 @@ pipeline {
 		stage("Logging before assembleAndDeploy starts") {
 			steps {
 				script {
-					assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started", env.BUILD_URL)
+					assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started", BUILD_URL)
 				}
 			}
 		}
@@ -83,7 +83,7 @@ pipeline {
 		stage("Logging assembleAndDeploy done") {
 			steps {
 				script {
-					assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done", env.BUILD_URL)
+					assembleAndDeployPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done", BUILD_URL)
 				}
 			}
 		}
@@ -91,7 +91,7 @@ pipeline {
 		stage("Logging before Install starts") {
 			steps {
 				script {
-					installPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started", env.BUILD_URL)
+					installPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Started", BUILD_URL)
 				}
 			}
 		}
@@ -120,7 +120,7 @@ pipeline {
 		stage("Logging Install done") {
 			steps {
 				script {
-					installPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done", env.BUILD_URL)
+					installPatchFunctions.logPatchActivity(paramsAsJson.patchNumbers, paramsAsJson.target, "Done", BUILD_URL)
 				}
 			}
 		}

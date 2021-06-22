@@ -40,7 +40,7 @@ pipeline {
 										patchfunctions.patchBuildDbZip(bp)
 								},
 								"java-build": {
-										bp.buildUrl = env.BUILD_URL
+										bp.buildUrl = BUILD_URL
 										patchfunctions.patchBuildsConcurrent(bp, revisionClonedPath)
 								}
 						)
@@ -53,7 +53,7 @@ pipeline {
 		stage("Logging before assembleAndDeploy starts") {
 			steps {
 				script {
-					onCloneFunctions.logAssembleAndDeployPatchActivity(paramsAsJson.adParameters, "Started", env.BUILD_URL)
+					onCloneFunctions.logAssembleAndDeployPatchActivity(paramsAsJson.adParameters, "Started", BUILD_URL)
 				}
 			}
 		}
@@ -77,7 +77,7 @@ pipeline {
 		stage("Logging assembleAndDeploy done") {
 			steps {
 				script {
-					onCloneFunctions.logAssembleAndDeployPatchActivity(paramsAsJson.adParameters, "Done", env.BUILD_URL)
+					onCloneFunctions.logAssembleAndDeployPatchActivity(paramsAsJson.adParameters, "Done", BUILD_URL)
 				}
 			}
 		}
