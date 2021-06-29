@@ -40,11 +40,20 @@ pipeline {
 										patchfunctions.patchBuildDbZip(bp)
 								},
 								"java-build": {
+										bp.buildUrl = BUILD_URL
 										patchfunctions.patchBuildsConcurrent(bp, revisionClonedPath)
 								}
 						)
 						commonPatchFunctions.deleteFolder(revisionClonedPath)
 					}
+				}
+			}
+		}
+		//JHE (17.06.2021): This is not really a stage ... but Jenkins won't accept to have step done before parallel tasks (below)
+		stage("Logging before assembleAndDeploy starts") {
+			steps {
+				script {
+					onCloneFunctions.logAssembleAndDeployPatchActivity(paramsAsJson.adParameters, "Started", BUILD_URL)
 				}
 			}
 		}
@@ -62,6 +71,14 @@ pipeline {
 							}
 						}
 				)
+			}
+		}
+		//JHE (17.06.2021): This is not really a stage ... but Jenkins won't accept to have step done before parallel tasks (below)
+		stage("Logging assembleAndDeploy done") {
+			steps {
+				script {
+					onCloneFunctions.logAssembleAndDeployPatchActivity(paramsAsJson.adParameters, "Done", BUILD_URL)
+				}
 			}
 		}
 	}
