@@ -4,6 +4,7 @@ import groovy.json.JsonSlurperClassic
 import java.text.SimpleDateFormat
 
 def paramsAsJson = new JsonSlurperClassic().parseText(params.PARAMETERS)
+paramsAsJson.buildUrl = BUILD_URL
 def dateInfo = new SimpleDateFormat("yyyyMMdd_HHmmss_S").format(new Date())
 def revisionClonedPath = "${env.GRADLE_USER_HOME_PATH}/patch${paramsAsJson.patchNumber}_${paramsAsJson.target}_${dateInfo}"
 
@@ -39,6 +40,7 @@ pipeline {
 						},
 						"java-build": {
 							script {
+								paramsAsJson.buildUrl = BUILD_URL
 								patchfunctions.patchBuildsConcurrent(paramsAsJson,revisionClonedPath)
 							}
 						}
